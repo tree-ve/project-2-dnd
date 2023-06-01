@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+
+<h2><%= title %></h2>
+<form action="/chars/<%= char._id %>?_method=PUT" method="POST">
+  <label>Name:
+    <input type="text" name="title" value="<%= char.name %>">
+  </label><br>
+  <label>Race:
+    <input type="text" name="race" value="<%= char.race %>">
+  </label><br>
+  <label>MPAA Rating
+    <select name="mpaaRating">
+      <option value="G" <%= movie.mpaaRating === 'G' ? 'selected' : '' %> >G</option>
+      <option value="PG" <%= movie.mpaaRating === 'PG' ? 'selected' : '' %> >PG</option>
+      <option value="PG-13" <%= movie.mpaaRating === 'PG-13' ? 'selected' : '' %> >PG-13</option>
+      <option value="R" <%= movie.mpaaRating === 'R' ? 'selected' : '' %> >R</option>
+    </select>
+  </label><br>
+  <label>Cast (separate actors with commas):
+    <input type="text" name="cast"  value="<%= movie.cast.join(', ') %>">
+  </label><br>
+  <label>Now Showing:
+    <input type="checkbox" name="nowShowing" <%= movie.nowShowing ? 'checked' : '' %>>
+  </label><br>
+  <button type="submit">Update Movie</button>
+</form>
+<p><%= errorMessage %></p>
+
+<%- include('../partials/footer') %>

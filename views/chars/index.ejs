@@ -1,0 +1,42 @@
+<%- include('../partials/header') %>
+<% if (user) { %>
+  <p>user._id: <%= user._id %></p>
+<% } %>
+<table id="list">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Race</th>
+      <th>Level</th>
+      <th>Class</th>
+      <th>Campaign</th>
+      <th></th>
+      <th><small>User</small></th>
+      <th></th>
+    </tr>
+  </thead>
+  <% if (user) { %>
+    <tbody>
+      <% chars.forEach(function(c) { %>
+        <tr>
+          <td><%= c.name %></td>
+          <td><%= c.race %></td>
+          <td><%= c.level %></td>
+          <td><%= c.class %></td>
+          <td><%= c.campaign %></td>
+          <td><a href="/chars/<%= c._id %>">DETAILS</a></td>
+          <td><small><%= c.user %></small></td>
+          <td>
+            <% if (user?._id.equals(c.user)) { %>
+              <form action="/char/<%= c._id %>?_method=DELETE" method="POST">
+                <button type="submit">X</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  <% } %>
+</table>
+  
+<%- include('../partials/footer') %>

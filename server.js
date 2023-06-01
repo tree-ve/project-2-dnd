@@ -16,6 +16,11 @@ require('./config/passport');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 // ! MAKE ROUTERS
+const campaignsRouter = require('./routes/campaigns');
+const charsRouter = require('./routes/chars');
+// * const classesRouter = require('./routes/classes');
+// * const playersRouter = require('./routes/players');
+const spellsRouter = require('./routes/spells');
 
 const app = express();
 
@@ -47,6 +52,11 @@ app.use(function (req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 // ! MOUNT ROUTERS
+app.use('/', campaignsRouter);
+app.use('/', charsRouter);
+// * app.use('/', classesRouter);
+// * app.use('/', playersRouter);
+app.use('/', spellsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+
+<form id="new-form" action="/users/<%= user._id %>/chars" method="POST">
+    <label>Name: </label>
+    <input type="text" name="name">
+    <label>Race: </label>
+    <input type="text" name="race">
+    <label>Level: </label>
+    <input type="number" name="level">
+    <label>Class: </label>
+    <select name="class">
+        <option value="artificer">artificer</option>
+        <option value="barbarian">barbarian</option>
+        <option value="bard">bard</option>
+        <option value="cleric">cleric</option>
+        <option value="druid">druid</option>
+        <option value="fighter">fighter</option>
+        <option value="monk">monk</option>
+        <option value="paladin">paladin</option>
+        <option value="ranger">ranger</option>
+        <option value="rogue">rogue</option>
+        <option value="sorcerer">sorcerer</option>
+        <option value="warlock">warlock</option>
+        <option value="wizard">wizard</option>
+    </select>
+    <label>HP: </label>
+    <input type="number" name="hp">
+    <label>AC: </label>
+    <input type="number" name="ac">
+    <label>Strength: </label>
+    <input type="number" name="str">
+    <label>Dexterity: </label>
+    <input type="number" name="dex">
+    <label>Constitution: </label>
+    <input type="number" name="con">
+    <label>Intelligence: </label>
+    <input type="number" name="int">
+    <label>Wisdom: </label>
+    <input type="number" name="wis">
+    <label>Charisma: </label>
+    <input type="number" name="cha">
+
+    <input type="submit" value="Create Character">
+</form>
+
+<p><%= errorMsg %></p>
+
+<%- include('../partials/footer') %>
