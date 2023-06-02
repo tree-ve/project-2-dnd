@@ -65,15 +65,22 @@ async function deleteChar(req, res) {
   // const user = await User.findOne({ 'user._id': req.params.id, 'chars.user': req.user._id});
   // const char = await Char.findOne({ _id: req.params.id, 'chars.user': req.user._id});
   // const char = await Char.findOne({ _id: req.params.id })
+  const user = await User.findById(req.user._id)
   const char = await Char.findById(req.params.id);
   if (!char) {
     console.log('not valid user?');
     return res.redirect('/chars')
   };
-  // char.remove(req.params.id)
+  // console.log(char)
+  // console.log(user.chars)
+  user.chars.remove(char._id)
+  // user.chars = []
+  await user.save()
+  console.log(user.chars)
   char.deleteOne(
     { _id: req.params.id }
   )
+
   // await user.save();
   res.redirect('/chars');
 }
@@ -81,10 +88,22 @@ async function deleteChar(req, res) {
 async function show(req, res) {
   console.log('show');
   const char = await Char.findById(req.params.id);//.populate('campaign');
-  const allChars = Char.findOne({ _id: req.params.id, user: req.user._id })
-  //const user = await User.findOne({ 'user._id': req.params.id, 'chars.user': req.user._id});
-  console.log(allChars)
-  // console.log(allChars);
+
+  //!
+  // const allChars = await Char.find({ user: req.user._id })
+  // console.log(typeof(allChars))
+  // // console.log(allChars[0])
+  // // console.log(allChars[1])
+  // console.log(allChars.length);
+  // const user = await User.findById(req.user._id)
+  // for (i = 0; i < allChars.length; i++) {
+  //   console.log(i)
+  //   // user.chars.push(allChars[i]);
+  // }
+  // // await user.save()
+  // console.log(user);
+  //!
+
   // console.log(req.params.id);
   // console.log(char);
   // const campaigns = await Campaign.find({ _id: { $nin: char.campaign } }).sort('name');
@@ -100,24 +119,6 @@ function newChar(req, res) {
   res.render('chars/new', { title: 'New Character', errorMsg: '' });
 }
 
-// async function create(req, res) {
-//   // convert nowShowing's checkbox of nothing or "on" to boolean
-//   // req.body.nowShowing = !!req.body.nowShowing;
-//   // Remove empty properties so that defaults will be applied
-//   for (let key in req.body) {
-//     if (req.body[key] === '') delete req.body[key];
-//   }
-//   try {
-//     // Update this line because now we need the _id of the new movie
-//     const char = await Char.create(req.body);
-//     // Redirect to the new movie's show functionality 
-//     res.redirect(`/chars/${char._id}`, { title: 'All Characters - post create' });
-//   } catch (err) {
-//     // Typically some sort of validation error
-//     console.log(err);
-//     res.render('chars/new', { title: 'New Char broke', errorMsg: err.message });
-//   }
-// }
 
 async function create(req, res) {
   console.log('create');
@@ -128,13 +129,11 @@ async function create(req, res) {
   // Add the user-centric info to req.body (the new review)
   req.body.user = req.user._id;
   console.log('req.body.user ->', req.body.user)
-  // req.body.userName = req.user.name;
-  // req.body.userAvatar = req.user.avatar;
-
   // We can push (or unshift) subdocs into Mongoose arrays
   console.log('req.body ->', req.body)
   const char = await Char.create(req.body);
-  // ? user.chars.push(req.body);
+  // const body = formatBody(req.body);
+  user.chars.push(char);
   try {
     await user.save();
     res.redirect(`/chars/${char._id}`, { title: char.name, char });

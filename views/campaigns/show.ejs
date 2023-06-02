@@ -1,11 +1,12 @@
 <%- include('../partials/header') %>
+<p><%= user._id %></p>
+<p><%= chars.name %></p>
 
 <section id="show-page">
-    <div><%= campaign.name %></div>
+    <div>
+        
+    </div>
     <ul>
-        <%- campaign.chars.map(c => 
-          `<li>${c.name} <small>${c.race} ${c.class}, Level ${c.level}</small></li>`
-        ).join('') %>
     </ul>
 </section>
 <label>Characters: 
