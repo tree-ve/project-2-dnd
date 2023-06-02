@@ -2,7 +2,7 @@
 
 <section id="show-page">
     <div><%= char.race %></div>
-    <div><%= char.class %></div>
+    <div><%= char.class[0].toUpperCase() + char.class.substring(1) %></div>
     <div>Level: </div>
     <div><%= char.level %></div>
     <div>HP: </div>
@@ -40,6 +40,17 @@
     <div><%= char.cha %></div>
     <% let cha = Math.floor((char.cha - 10) / 2)%>
     <div><small><%= (cha < 0 ? '':'+') + cha %></small></div>
+</section>
+<br>
+<section>
+    <% if (user?._id.equals(char.user)) { %>
+        <button>
+            <a href="/chars/<%= char._id %>/edit">EDIT CHARACTER</a>
+        </button> 
+        <form action="/chars/<%= char._id %>?_method=DELETE" method="POST">
+            <button type="submit">DELETE CHARACTER</button>
+        </form>
+    <% } %>
 </section>
 
 <%- include('../partials/footer') %>

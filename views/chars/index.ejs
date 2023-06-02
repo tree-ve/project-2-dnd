@@ -18,25 +18,33 @@
   <% if (user) { %>
     <tbody>
       <% chars.forEach(function(c) { %>
-        <tr>
-          <td><%= c.name %></td>
-          <td><%= c.race %></td>
-          <td><%= c.level %></td>
-          <td><%= c.class %></td>
-          <td><%= c.campaign %></td>
-          <td><a href="/chars/<%= c._id %>">DETAILS</a></td>
-          <td><small><%= c.user %></small></td>
-          <td>
-            <% if (user?._id.equals(c.user)) { %>
-              <form action="/char/<%= c._id %>?_method=DELETE" method="POST">
+        <% if (user?._id.equals(c.user)) { %>
+          <tr>
+            <td><%= c.name[0].toUpperCase() + c.name.substring(1) %></td>
+            <td><%= c.race[0].toUpperCase() + c.race.substring(1) %></td>
+            <td><%= c.level %></td>
+            <td><%= c.class[0].toUpperCase() + c.class.substring(1) %></td>
+            <td><%= c.campaign %></td>
+            <td><a href="/chars/<%= c._id %>">DETAILS</a></td>
+            <td><small><%= c.user %></small></td>
+            <td>
+              <form action="/chars/<%= c._id %>?_method=DELETE" method="POST">
                 <button type="submit">X</button>
               </form>
-            <% } %>
-          </td>
-        </tr>
+            </td>
+            </tr>
+        <% } %>
       <% }); %>
     </tbody>
   <% } %>
 </table>
-  
+<br>
+<section>
+  <% if (user) { %>
+      <button>
+          <a href="/chars/new">CREATE A CHARACTER</a>
+      </button> 
+  <% } %>
+</section>
+
 <%- include('../partials/footer') %>

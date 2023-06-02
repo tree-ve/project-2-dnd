@@ -1,29 +1,60 @@
 <%- include('../partials/header') %>
 
-<h2><%= title %></h2>
 <form action="/chars/<%= char._id %>?_method=PUT" method="POST">
   <label>Name:
-    <input type="text" name="title" value="<%= char.name %>">
+    <input type="text" name="name" value="<%= char.name %>">
   </label><br>
   <label>Race:
     <input type="text" name="race" value="<%= char.race %>">
   </label><br>
-  <label>MPAA Rating
-    <select name="mpaaRating">
-      <option value="G" <%= movie.mpaaRating === 'G' ? 'selected' : '' %> >G</option>
-      <option value="PG" <%= movie.mpaaRating === 'PG' ? 'selected' : '' %> >PG</option>
-      <option value="PG-13" <%= movie.mpaaRating === 'PG-13' ? 'selected' : '' %> >PG-13</option>
-      <option value="R" <%= movie.mpaaRating === 'R' ? 'selected' : '' %> >R</option>
-    </select>
+  <label>Level:
+    <input type="number" name="level" value="<%= char.level %>">
   </label><br>
-  <label>Cast (separate actors with commas):
-    <input type="text" name="cast"  value="<%= movie.cast.join(', ') %>">
+  <label>Class:
+    <select name="class">
+      <option value="artificer">artificer</option>
+      <option value="barbarian">barbarian</option>
+      <option value="bard">bard</option>
+      <option value="cleric">cleric</option>
+      <option value="druid">druid</option>
+      <option value="fighter">fighter</option>
+      <option value="monk">monk</option>
+      <option value="paladin">paladin</option>
+      <option value="ranger">ranger</option>
+      <option value="rogue">rogue</option>
+      <option value="sorcerer">sorcerer</option>
+      <option value="warlock">warlock</option>
+      <option value="wizard">wizard</option>
+  </select>
   </label><br>
-  <label>Now Showing:
-    <input type="checkbox" name="nowShowing" <%= movie.nowShowing ? 'checked' : '' %>>
+  <label>HP:
+    <input type="number" name="hp" value="<%= char.hp %>">
   </label><br>
-  <button type="submit">Update Movie</button>
+  <label>AC:
+    <input type="number" name="ac" value="<%= char.ac %>">
+  </label><br>
+  <label>Strength:
+    <input type="number" name="str" value="<%= char.str %>">
+  </label><br>
+  <label>Dexterity:
+    <input type="number" name="dex" value="<%= char.dex %>">
+  </label><br>
+  <label>Constitution:
+    <input type="number" name="con" value="<%= char.con %>">
+  </label><br>
+  <label>Intelligence:
+    <input type="number" name="int" value="<%= char.int %>">
+  </label><br>
+  <label>Wisdom:
+    <input type="number" name="wis" value="<%= char.wis %>">
+  </label><br>
+  <label>Charisma:
+    <input type="number" name="cha" value="<%= char.cha %>">
+  </label><br>
+
+  <input type="submit" value="Save Changes">
+
 </form>
-<p><%= errorMessage %></p>
+<p><%= errorMsg %></p>
 
 <%- include('../partials/footer') %>

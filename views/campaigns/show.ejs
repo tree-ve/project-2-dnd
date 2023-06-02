@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+
+<section id="show-page">
+    <div><%= campaign.name %></div>
+    <ul>
+        <%- campaign.chars.map(c => 
+          `<li>${c.name} <small>${c.race} ${c.class}, Level ${c.level}</small></li>`
+        ).join('') %>
+    </ul>
+</section>
+<label>Characters: 
+    <% if (user) { %>
+        <form id="add-char-to-campaign" action="/campaigns/<%= campaign._id %>/chars" method="POST">
+            <select name="charId">
+                <!-- Creates an option for each character -->
+                <% if (user?._id.equals(chars.user)) { %>
+                    <%- chars.map(c => 
+                        `<option value="${c._id}">${c.name}<br></option>`
+                    ).join('') %>
+                <% } %>
+            </select>
+            <button type="submit">Add to Campaign</button>
+        </form>
+    <% } %>
+</label>
+<br>
+<section>
+    <% if (user?._id.equals(campaign.owner)) { %>
+        <button>
+            <a href="/campaigns/<%= campaign._id %>/edit">EDIT CAMPAIGN</a>
+        </button> 
+        <form action="/campaigns/<%= campaign._id %>?_method=DELETE" method="POST">
+            <button type="submit">DELETE CAMPAIGN</button>
+        </form>
+    <% } %>
+</section>
+
+<%- include('../partials/footer') %>

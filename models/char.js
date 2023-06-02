@@ -17,17 +17,17 @@ const charSchema = new Schema({
         required: true,
         // enum: ['']
     },
-    // class: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Class',
-    //     required: true
-    // },
     level: {
         type: Number,
         min: 1,
         max: 20,
         required: true
     },
+    // class: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Class',
+    //     required: true
+    // },
     class: {
         type: String,
         required: true,

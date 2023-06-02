@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+<% if (user) { %>
+  <p>user._id: <%= user._id %></p>
+<% } %>
+<table id="list">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Players</th>
+      <th>Owner</th>
+      <th></th>
+      <th><small>User</small></th>
+      <th></th>
+    </tr>
+  </thead>
+  <% if (user) { %>
+    <tbody>
+      <% campaigns.forEach(function(c) { %>
+        <tr>
+          <td><%= c.name %></td>
+          <td>charInt</td>
+          <td><%= c.ownerName %></td>
+          <td><a href="/campaigns/<%= c._id %>">DETAILS</a></td>
+          <td><small><%= c.owner %></small></td>
+          <td>
+            <% if (user?._id.equals(c.owner)) { %>
+              <form action="/campaigns/<%= c._id %>?_method=DELETE" method="POST">
+                <button type="submit">X</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  <% } %>
+</table>
+<br>
+<section>
+  <% if (user) { %>
+      <button>
+          <a href="/campaigns/new">CREATE CAMPAIGN</a>
+      </button> 
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

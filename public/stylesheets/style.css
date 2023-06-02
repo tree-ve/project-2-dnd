@@ -186,11 +186,20 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 34px;
+  height: 50px;
+  width: 150px;
+  text-decoration: none;
+  background-color: #61956D;
+  border-radius: 25px;
+  color: white;
 }
 
 .login img {
-  height: 30px;
+  height: 40px;
+  background-color: #B8C0C2;
+  border-radius: 50%;
+  padding: 5px;
+  margin-left: 10px;
 }
 
 .review-user {

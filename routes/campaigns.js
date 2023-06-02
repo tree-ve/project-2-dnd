@@ -7,11 +7,28 @@ const ensureLoggedIn = require('../config/ensureLoggedIn');
 	
 // GET /campaigns
 router.get('/campaigns', campaignsCtrl.index);
+
 // GET /campaigns/new
 router.get('/campaigns/new', ensureLoggedIn, campaignsCtrl.new);
+
 // GET /campaigns/:id (show functionality) MUST be below new route
 router.get('/campaigns/:id', campaignsCtrl.show);
+
 // POST /campaigns
 router.post('/campaigns', ensureLoggedIn, campaignsCtrl.create);
-	
+
+// GET /campaigns/:id/edit
+router.get('/campaigns/:id/edit', campaignsCtrl.edit)
+
+// PUT /campaigns/:id
+router.put('/campaigns/:id', campaignsCtrl.update)
+
+// DELETE /chars/:id
+router.delete('/campaigns/:id', ensureLoggedIn, campaignsCtrl.delete);
+// router.delete('/chars/:id', ensureLoggedIn, charsCtrl.delete);
+
+// POST /campaigns/:id/chars
+// router.post('/campaigns/:id/chars', ensureLoggedIn, campaignsCtrl.addToCampaign);
+
+
 module.exports = router;

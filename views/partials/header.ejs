@@ -9,15 +9,18 @@
 </head>
 <body>
   <nav>
-    <img src="/images/camera.svg">
-    <a href="/chars" <%- title === 'My Characters' ? 'class="active"' : '' %>>MY CHARACTERS</a>
+    <img src="/images/dndLogo.png">
     <% if (user) { %>
-      <a href="/chars/new"	<%- title === 'New Character' ? 'class="active"' : '' %>>NEW CHARACTER</a>
-      <a href="/campaigns/new" <%- title === 'Create Campaign' ? 'class="active"' : '' %>>CREATE CAMPAIGN</a>
+      <a href="/chars" <%- title === 'My Characters' ? 'class="active"' : '' %>>MY CHARACTERS</a>
+      <!-- <a href="/chars/new"	<%- title === 'New Character' ? 'class="active"' : '' %>>NEW CHARACTER</a> -->
+      <a href="/campaigns" <%- title === 'My Campaigns' ? 'class="active"' : '' %>>MY CAMPAIGNS</a>
+      <!-- <a href="/campaigns/new" <%- title === 'Create Campaign' ? 'class="active"' : '' %>>CREATE CAMPAIGN</a> -->
       <a href="/logout">LOG OUT</a>
-    <% } else { %>
+    <% } %>
+    <% if (!user) { %>
       <a href="/auth/google" class="login">LOG IN&nbsp;<img src="https://i.imgur.com/FHjYyi0.png"></a>
     <% } %>
   </nav>
   <main>
     <h1><%= title %></h1>
+    

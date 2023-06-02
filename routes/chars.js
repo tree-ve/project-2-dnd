@@ -4,6 +4,9 @@ const router = express.Router();
 const charsCtrl = require('../controllers/chars');
 // Require the auth middleware
 const ensureLoggedIn = require('../config/ensureLoggedIn');
+
+// const passport = require('passport');
+// const user = require('../models/user');
 	
 // GET /chars
 router.get('/chars', charsCtrl.index);
@@ -18,7 +21,18 @@ router.get('/chars/:id', charsCtrl.show);
 router.post('/users/:id/chars', ensureLoggedIn, charsCtrl.create);
 // router.post('/chars', ensureLoggedIn, charsCtrl.create);
 
+// GET /chars/:id/edit
+router.get('/chars/:id/edit', charsCtrl.edit)
+
+// PUT /chars/:id
+router.put('/chars/:id', charsCtrl.update)
+
 // DELETE /chars/:id
 router.delete('/chars/:id', ensureLoggedIn, charsCtrl.delete);
-	
+// router.delete('/chars/:id', ensureLoggedIn, charsCtrl.delete);
+
+// ! Need an addToCampaign
+// POST /campaigns/:id/chars
+router.post('/campaigns/:id/chars', ensureLoggedIn, charsCtrl.addToCampaign);
+
 module.exports = router;

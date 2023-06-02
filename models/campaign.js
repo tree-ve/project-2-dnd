@@ -15,7 +15,10 @@ const campaignSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
-},
+  },
+  ownerName: {
+    type: String,
+  }
 }, {
   timestamps: true
 });

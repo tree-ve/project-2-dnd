@@ -1,0 +1,26 @@
+<%- include('../partials/header') %>
+
+<form action="/campaigns/<%= campaign._id %>?_method=PUT" method="POST">
+  <label>Name:
+    <input type="text" name="name" value="<%= campaign.name %>">
+  </label><br>
+  <label>Characters: 
+    <% if (user) { %>
+        <form id="add-char-to-campaign" action="/campaigns/<%= campaign._id %>/chars" method="POST">
+          <select name="charId">
+            <!-- Creates an option for each character -->
+            <%- chars.map(c => 
+              `<option value="${c._id}">${c.name}<br></option>`
+            ).join('') %>
+          </select>
+          <button type="submit">Add to Campaign</button>
+        </form>
+      <% } %>
+  </label>
+
+  <input type="submit" value="Save Changes">
+
+</form>
+<p><%= errorMsg %></p>
+
+<%- include('../partials/footer') %>

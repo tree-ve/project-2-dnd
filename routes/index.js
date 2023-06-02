@@ -5,7 +5,9 @@ const passport = require('passport');
 
 // This app has no "home" page, but your projects should 😀
 router.get('/', function(req, res, next) {
-  res.redirect('/chars');
+  console.log('iskebg')
+  res.render('index', { title: 'D&D Organiser' });
+  // res.redirect('/');
 });
 
 // Google OAuth login route
@@ -26,7 +28,7 @@ router.get('/oauth2callback', passport.authenticate(
   {
     successRedirect: '/chars',
     // Change to what's best for MY APP
-    failureRedirect: '/chars'
+    failureRedirect: '/'
   }
 ));
 
@@ -34,7 +36,7 @@ router.get('/oauth2callback', passport.authenticate(
 router.get('/logout', function(req, res){
   req.logout(function() {
     // Change path for my 'landing' page
-    res.redirect('/chars');
+    res.redirect('/');
   });
 });
 

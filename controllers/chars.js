@@ -1,35 +1,92 @@
-const Char = require('../models/char');
+// const { format } = require('morgan');
 const Campaign = require('../models/campaign');
+const Char = require('../models/char');
+// const Campaign = require('../models/campaign');
 const User = require('../models/user');
+const { all } = require('../routes/chars');
 
 module.exports = {
   index,
   show,
   new: newChar,
   create,
-  delete: deleteChar
+  edit,
+  update,
+  delete: deleteChar,
+  addToCampaign
 };
 
+function formatBody(body){
+  return { 
+    ...body, // body as it was in the original request
+    // nowShowing: !!body.nowShowing, // update the nowShowing field to it's boolean value
+    level: parseInt(body.level),
+    hp: parseInt(body.hp),
+    ac: parseInt(body.ac),
+    str: parseInt(body.str),
+    dex: parseInt(body.dex),
+    con: parseInt(body.con),
+    int: parseInt(body.int),
+    wis: parseInt(body.wis),
+    cha: parseInt(body.cha),
+  }
+}
+
+async function addToUser(req, res) {
+
+}
+
+async function addToCampaign(req, res) {
+  console.log('addToCampaign')
+  const campaign = await Campaign.findById(req.params.id);
+  console.log('campaign', campaign)
+  console.log('req.params.id ->', req.params.id)
+  // console.log('user ->', user)
+  console.log('req.body.charId ->', req.body.charId)
+  // The chars array holds the characters's ObjectId (referencing)
+  const charName = Char.findById(req.body.charId);
+  console.log(charName);
+  campaign.chars.push(req.body.charId);
+  await campaign.save();
+  res.redirect(`/campaigns/${campaign._id}`);
+  console.log('campaign', campaign)
+}
+
 async function index(req, res) {
+  console.log('index');
   const chars = await Char.find({});
   res.render('chars/index', { title: 'My Characters', chars });
 }
 
-async function deleteChar(req,res) {
-  console.log('req.params.id ->', req.params.id)
-  console.log('req.user._id ->', req.user._id)
-  const user = await User.findOne({ 'users._id': req.params.id, 'chars.user': req.user._id});
-  console.log('user.chars ->', user.chars);
-  if (!user) return res.redirect('/chars');
-  // user.chars.remove(req.params.id)
+async function deleteChar(req, res) {
+  console.log('delete');
+  // console.log('req.params.id ->', req.params.id)
+  // console.log('req.user._id ->', req.user._id)
+  // const user = await User.findOne({ 'user._id': req.params.id, 'chars.user': req.user._id});
+  // const char = await Char.findOne({ _id: req.params.id, 'chars.user': req.user._id});
+  // const char = await Char.findOne({ _id: req.params.id })
+  const char = await Char.findById(req.params.id);
+  if (!char) {
+    console.log('not valid user?');
+    return res.redirect('/chars')
+  };
+  // char.remove(req.params.id)
+  char.deleteOne(
+    { _id: req.params.id }
+  )
   // await user.save();
   res.redirect('/chars');
 }
 
 async function show(req, res) {
+  console.log('show');
   const char = await Char.findById(req.params.id);//.populate('campaign');
-  console.log(req.params.id);
-  console.log(char);
+  const allChars = Char.findOne({ _id: req.params.id, user: req.user._id })
+  //const user = await User.findOne({ 'user._id': req.params.id, 'chars.user': req.user._id});
+  console.log(allChars)
+  // console.log(allChars);
+  // console.log(req.params.id);
+  // console.log(char);
   // const campaigns = await Campaign.find({ _id: { $nin: char.campaign } }).sort('name');
   // res.render('chars/show', { title: char.name, char, campaigns });
   res.render('chars/show', { title: char.name, char });
@@ -37,6 +94,7 @@ async function show(req, res) {
 }
 
 function newChar(req, res) {
+  console.log('new');
   // We'll want to be able to render an  
   // errorMsg if the create action fails
   res.render('chars/new', { title: 'New Character', errorMsg: '' });
@@ -62,6 +120,7 @@ function newChar(req, res) {
 // }
 
 async function create(req, res) {
+  console.log('create');
   const user = await User.findById(req.params.id);
 
   console.log('req.params.id ->', req.params.id)
@@ -88,4 +147,28 @@ async function create(req, res) {
   // Step 5:  Respond to the Request (redirect if data has been changed)
   // res.redirect(`/chars`);
   res.redirect(`/chars/${char._id}`);
+}
+
+async function edit(req, res, next) {
+  console.log('edit')
+  try {
+    const char = await Char.findById(req.params.id);
+    res.render('chars/edit', { title: `Edit Character: ${char.name}`, char, errorMsg: '' });
+  } catch (error) {
+    next()
+  }
+}
+
+async function update(req, res) {
+  console.log('update')
+  const char = await Char.findById(req.params.id);
+  try {
+    const charInfo = await Char.findById(req.params.id);
+    const body = formatBody(req.body);
+    Object.assign(charInfo, body);
+    await charInfo.save()
+    res.render('chars/show', { title: charInfo.name, char: charInfo.toObject() })
+  } catch (err) {
+    res.render('chars/edit', { title: `Edit Character: ${char.name}`, char, errorMsg: err.message });
+  }
 }
