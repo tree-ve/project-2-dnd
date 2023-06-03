@@ -6,7 +6,8 @@ const charSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String,
@@ -87,7 +88,8 @@ const charSchema = new Schema({
     },
     campaign: {
         type: Schema.Types.ObjectId,
-        ref: 'Campaign'
+        ref: 'Campaign',
+        unique: true
     }
   }, {
     timestamps: true

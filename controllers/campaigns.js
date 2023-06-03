@@ -10,6 +10,7 @@ module.exports = {
   delete: deleteCampaign,
   edit,
   update,
+  addToChar
 };
 
 async function index(req, res) {
@@ -17,16 +18,30 @@ async function index(req, res) {
   res.render('campaigns/index', { title: 'All Campaigns', campaigns });
 }
 
-// async function addToCampaign(req, res) {
-//   // const movie = await Movie.findById(req.params.id);
-//   console.log('req.params.id ->', req.params.id)
-//   console.log('user ->', user)
-//   console.log('req.body.user ->', req.body.user)
-//   // The cast array holds the performer's ObjectId (referencing)
-//   // movie.cast.push(req.body.performerId);
-//   // await movie.save();
-//   // res.redirect(`/movies/${movie._id}`);
-// }
+async function addToChar(req, res) {
+  console.log('addToChar')
+  const char = await Char.findById(req.params.id);
+  // console.log('char', char)
+  console.log('req.params.id ->', req.params.id)
+  // console.log('user ->', user)
+  console.log('req.body.campaignId ->', req.body.campaignId) // maybe change chars back to charId
+  // console.log('req ->', req)
+  // The chars array holds the characters's ObjectId (referencing)
+  const campaign = await Campaign.findById(req.body.campaignId); // maybe change chars back to charId
+  console.log('campaign ->', campaign);
+  console.log('req.body ->', req.body)
+  // char.campaign.push(req.body.chars);
+  
+  // char.campaign = campaign
+  // await char.save();
+  console.log('char ->', char)
+  console.log('req.params.id ->', req.params.id)
+  console.log('char._id ->', char._id)
+  console.log('char.id ->', char.id)
+  // res.render(`/chars/${char.id}`, char);
+  res.redirect(`/chars/${char.id}`);
+  console.log('char', char)
+}
 
 async function deleteCampaign(req, res) {
   console.log('delete');
@@ -52,12 +67,24 @@ async function deleteCampaign(req, res) {
 async function show(req, res) {
   // Populate the cast array with performer docs instead of ObjectIds
   const campaign = await Campaign.findById(req.params.id);
-  // Mongoose query builder approach to retrieve performers not the movie:
-    // Performer.find({}).where('_id').nin(movie.cast)
-  // The native MongoDB approach uses a query object to find 
-  // performer docs whose _ids are not in the movie.cast array like this:
-  const chars = await Char.find({ _id: { $nin: campaign.chars } }).sort('name');
-  res.render('campaigns/show', { title: 'Campaign Details', campaign, chars });
+
+  const user = await User.findById(req.user._id);
+  const userCharsArr = []
+  for (i = 0; i < req.user.chars.length; i++) {
+    const userChar = await Char.findById(req.user.chars[i]);
+    userCharsArr.push(userChar)
+    console.log(userChar.name)
+  }
+  const chars = await Char.find({ _id: userCharsArr });//   .sort('name');
+  // const usersChars = await Char.find({ _id: { $nin: campaign.chars }, campaign: { $exists: false } });//   .sort('name');
+  // const campaignChars = await Char.find({ _id: campaign.chars });//   .sort('name');
+  const usersChars = await Char.find({ campaign: { $exists: false } });
+  console.log('usersChars -> ', usersChars)
+  const campaignChars = await Char.find({ campaign: campaign });
+  console.log('campaignChars -> ', campaignChars)
+  console.log('campaign ->', campaign);
+  // const chars = await Char.find({ _id: { $nin: campaign.chars } }).sort('name');
+  res.render('campaigns/show', { title: 'Campaign Details', campaign, chars, usersChars, campaignChars });
 }
 
 function newCampaign(req, res) {
@@ -109,13 +136,15 @@ async function edit(req, res, next) {
 async function update(req, res) {
   console.log('update')
   const campaign = await Campaign.findById(req.params.id);
+  const usersChars = await Char.find({ campaign: { $exists: false } });
+  const campaignChars = await Char.find({ campaign: campaign });
   try {
     const campaignInfo = await Campaign.findById(req.params.id);
     // const body = formatBody(req.body);
     Object.assign(campaignInfo, req.body);
     await campaignInfo.save()
-    res.render('campaigns/show', { title: campaignInfo.name, campaign: campaignInfo.toObject() })
+    res.render('campaigns/show', { title: campaignInfo.name, campaign: campaignInfo.toObject(), usersChars, campaignChars })
   } catch (err) {
-    res.render('campaign/edit', { title: `Edit Campaign: ${campaign.name}`, campaign, errorMsg: err.message });
+    res.render('campaign/edit', { title: `Edit Campaign:`, campaign, errorMsg: err.message });
   }
 }

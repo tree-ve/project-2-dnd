@@ -1,39 +1,40 @@
 <%- include('../partials/header') %>
-<p><%= user._id %></p>
-<p><%= chars.name %></p>
+
+<p><%= campaign.name %></p>
+<p><%= campaign._id %></p>
 
 <section id="show-page">
-    <div>
-        
-    </div>
-    <ul>
-    </ul>
+    <label>Characters: <br>
+        <% if (user) { %>
+            <% campaignChars.forEach(function(character) { %>
+                <div><%= character.name %>: Level <%= character.level %> <%= character.race %> <%= character.class %></div>
+                <a href="/chars/<%= character._id %>">DETAILS</a>
+                <a href="/campaigns/<%= campaign._id %>/chars" method="PUT">X</a>
+            <% }); %>
+            <br>
+            <form id="add-char-to-campaign" action="/campaigns/<%= campaign._id %>/chars" method="POST">
+                <select name="charId">
+                    <!-- Creates an option for each character -->
+                    <% usersChars.forEach(function(uc) { %>
+                        <% if (user?._id.equals(uc.user)) { %>
+                            <option value="<%= uc._id %>"><%= uc.name %></option>
+                        <% } %>
+                    <% }); %>
+                </select>
+                <button type="submit">Add to Campaign</button>
+            </form>
+        <% } %>
+    </label>
+    <br>
+    <section>
+        <% if (user?._id.equals(campaign.owner)) { %>
+            <button>
+                <a href="/campaigns/<%= campaign._id %>/edit">EDIT CAMPAIGN</a>
+            </button> 
+            <form action="/campaigns/<%= campaign._id %>?_method=DELETE" method="POST">
+                <button type="submit">DELETE CAMPAIGN</button>
+            </form>
+        <% } %>
+    </section>
 </section>
-<label>Characters: 
-    <% if (user) { %>
-        <form id="add-char-to-campaign" action="/campaigns/<%= campaign._id %>/chars" method="POST">
-            <select name="charId">
-                <!-- Creates an option for each character -->
-                <% if (user?._id.equals(chars.user)) { %>
-                    <%- chars.map(c => 
-                        `<option value="${c._id}">${c.name}<br></option>`
-                    ).join('') %>
-                <% } %>
-            </select>
-            <button type="submit">Add to Campaign</button>
-        </form>
-    <% } %>
-</label>
-<br>
-<section>
-    <% if (user?._id.equals(campaign.owner)) { %>
-        <button>
-            <a href="/campaigns/<%= campaign._id %>/edit">EDIT CAMPAIGN</a>
-        </button> 
-        <form action="/campaigns/<%= campaign._id %>?_method=DELETE" method="POST">
-            <button type="submit">DELETE CAMPAIGN</button>
-        </form>
-    <% } %>
-</section>
-
 <%- include('../partials/footer') %>

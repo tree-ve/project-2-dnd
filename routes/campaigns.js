@@ -28,7 +28,8 @@ router.delete('/campaigns/:id', ensureLoggedIn, campaignsCtrl.delete);
 // router.delete('/chars/:id', ensureLoggedIn, charsCtrl.delete);
 
 // POST /campaigns/:id/chars
-// router.post('/campaigns/:id/chars', ensureLoggedIn, campaignsCtrl.addToCampaign);
+router.post('/chars/:id/campaigns', ensureLoggedIn, campaignsCtrl.addToChar);
+// router.put('/chars/:id/campaigns', ensureLoggedIn, campaignsCtrl.addToChar);
 
 
 module.exports = router;

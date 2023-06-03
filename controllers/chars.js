@@ -13,7 +13,8 @@ module.exports = {
   edit,
   update,
   delete: deleteChar,
-  addToCampaign
+  addToCampaign,
+  removeFromCampaign
 };
 
 function formatBody(body){
@@ -42,11 +43,36 @@ async function addToCampaign(req, res) {
   console.log('campaign', campaign)
   console.log('req.params.id ->', req.params.id)
   // console.log('user ->', user)
-  console.log('req.body.charId ->', req.body.charId)
+  console.log('req.body.charId ->', req.body.charId) // maybe change chars back to charId
+  // console.log('req ->', req)
   // The chars array holds the characters's ObjectId (referencing)
-  const charName = Char.findById(req.body.charId);
-  console.log(charName);
-  campaign.chars.push(req.body.charId);
+  const char = await Char.findById(req.body.charId); // maybe change chars back to charId
+  console.log('char ->', char);
+  // ? campaign.chars.push(req.body.chars);
+  char.campaign = {}
+  console.log('char.campaign ->', char.campaign);
+  char.campaign = campaign
+  console.log('char.campaign ->', char.campaign);
+  await char.save();
+  console.log('char ->', char);
+  res.redirect(`/campaigns/${campaign._id}`);
+  console.log('campaign', campaign)
+}
+
+async function removeFromCampaign(req, res) {
+  console.log('removeFromCampaign')
+  const campaign = await Campaign.findById(req.params.id);
+  console.log('campaign', campaign)
+  console.log('req.params.id ->', req.params.id)
+  // console.log('user ->', user)
+  console.log('req.body.charId ->', req.body.charId) // maybe change chars back to charId
+  console.log('req ->', req)
+  // The chars array holds the characters's ObjectId (referencing)
+  const char = Char.findById(req.body.charId); // maybe change chars back to charId
+  // console.log(char);
+  char.campaign = {}
+  console.log('char.campaign ->', char.campaign);
+  // campaign.chars.remove(req.body.chars);
   await campaign.save();
   res.redirect(`/campaigns/${campaign._id}`);
   console.log('campaign', campaign)
@@ -88,7 +114,8 @@ async function deleteChar(req, res) {
 async function show(req, res) {
   console.log('show');
   const char = await Char.findById(req.params.id);//.populate('campaign');
-
+  const activeCampaign = await Campaign.find({ _id: char.campaign })
+  const campaigns = await Campaign.find({ _id: { $nin: char.campaign } })// .sort('name');
   //!
   // const allChars = await Char.find({ user: req.user._id })
   // console.log(typeof(allChars))
@@ -105,10 +132,12 @@ async function show(req, res) {
   //!
 
   // console.log(req.params.id);
-  // console.log(char);
+  console.log(char)
+  console.log(activeCampaign);
+  console.log(char.campaign)
   // const campaigns = await Campaign.find({ _id: { $nin: char.campaign } }).sort('name');
   // res.render('chars/show', { title: char.name, char, campaigns });
-  res.render('chars/show', { title: char.name, char });
+  res.render('chars/show', { title: char.name, char, campaigns, activeCampaign });
   // res.render(`chars/${char._id}`, { title: char.name });
 }
 

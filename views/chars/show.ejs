@@ -1,56 +1,74 @@
 <%- include('../partials/header') %>
+<% if (user) { %>
+    <h2>
+        <% activeCampaign.forEach(function(campaign) { %>
+            <div>Campaign: <%= campaign.name %></div>
+        <% }); %>
+    </h2>
+    <div><%= char._id %></div>
+    <section id="show-page">
+        <div><%= char.race %></div>
+        <div><%= char.class[0].toUpperCase() + char.class.substring(1) %></div>
+        <div>Level: </div>
+        <div><%= char.level %></div>
+        <div>HP: </div>
+        <div><%= char.hp %></div>
+        <div>AC: </div>
+        <div><%= char.ac %></div>
+    </section>
+    <section id="stats">
+        <div>Strength: </div>
+        <div><%= char.str %></div>
+        <% let str = Math.floor((char.str - 10) / 2)%>
+        <div><small><%= (str < 0 ? '':'+') + str %></small></div>
+        
+        <div>Dexterity: </div>
+        <div><%= char.dex %></div>
+        <% let dex = Math.floor((char.dex - 10) / 2)%>
+        <div><small><%= (dex < 0 ? '':'+') + dex %></small></div>
 
-<section id="show-page">
-    <div><%= char.race %></div>
-    <div><%= char.class[0].toUpperCase() + char.class.substring(1) %></div>
-    <div>Level: </div>
-    <div><%= char.level %></div>
-    <div>HP: </div>
-    <div><%= char.hp %></div>
-    <div>AC: </div>
-    <div><%= char.ac %></div>
-</section>
-<section id="stats">
-    <div>Strength: </div>
-    <div><%= char.str %></div>
-    <% let str = Math.floor((char.str - 10) / 2)%>
-    <div><small><%= (str < 0 ? '':'+') + str %></small></div>
-    
-    <div>Dexterity: </div>
-    <div><%= char.dex %></div>
-    <% let dex = Math.floor((char.dex - 10) / 2)%>
-    <div><small><%= (dex < 0 ? '':'+') + dex %></small></div>
+        <div>Constitution: </div>
+        <div><%= char.con %></div>
+        <% let con = Math.floor((char.con - 10) / 2)%>
+        <div><small><%= (con < 0 ? '':'+') + con %></small></div>
 
-    <div>Constitution: </div>
-    <div><%= char.con %></div>
-    <% let con = Math.floor((char.con - 10) / 2)%>
-    <div><small><%= (con < 0 ? '':'+') + con %></small></div>
+        <div>Intelligence: </div>
+        <div><%= char.int %></div>
+        <% let int = Math.floor((char.int - 10) / 2)%>
+        <div><small><%= (int < 0 ? '':'+') + int %></small></div>
 
-    <div>Intelligence: </div>
-    <div><%= char.int %></div>
-    <% let int = Math.floor((char.int - 10) / 2)%>
-    <div><small><%= (int < 0 ? '':'+') + int %></small></div>
+        <div>Wisdom: </div>
+        <div><%= char.wis %></div>
+        <% let wis = Math.floor((char.wis - 10) / 2)%>
+        <div><small><%= (wis < 0 ? '':'+') + wis %></small></div>
 
-    <div>Wisdom: </div>
-    <div><%= char.wis %></div>
-    <% let wis = Math.floor((char.wis - 10) / 2)%>
-    <div><small><%= (wis < 0 ? '':'+') + wis %></small></div>
-
-    <div>Charisma: </div>
-    <div><%= char.cha %></div>
-    <% let cha = Math.floor((char.cha - 10) / 2)%>
-    <div><small><%= (cha < 0 ? '':'+') + cha %></small></div>
-</section>
-<br>
-<section>
-    <% if (user?._id.equals(char.user)) { %>
-        <button>
-            <a href="/chars/<%= char._id %>/edit">EDIT CHARACTER</a>
-        </button> 
-        <form action="/chars/<%= char._id %>?_method=DELETE" method="POST">
-            <button type="submit">DELETE CHARACTER</button>
+        <div>Charisma: </div>
+        <div><%= char.cha %></div>
+        <% let cha = Math.floor((char.cha - 10) / 2)%>
+        <div><small><%= (cha < 0 ? '':'+') + cha %></small></div>
+    </section>
+    <br>
+    <section>
+        <div>Add to Campaign: </div>
+        <form id="add-campaign-to-char" action="/chars/<%= char._id %>/campaigns" method="POST">
+            <select name="campaignId">
+                <% campaigns.forEach(function(campaign) { %>
+                        <option value="<%= campaign._id %>"><%= campaign.name %></option>
+                <% }); %>
+            </select>
+            <button type="submit">Add to Campaign</button>
         </form>
-    <% } %>
-</section>
-
+    </section>
+    <br>
+    <section>
+        <% if (user?._id.equals(char.user)) { %>
+            <button>
+                <a href="/chars/<%= char._id %>/edit">EDIT CHARACTER</a>
+            </button> 
+            <form action="/chars/<%= char._id %>?_method=DELETE" method="POST">
+                <button type="submit">DELETE CHARACTER</button>
+            </form>
+        <% } %>
+    </section>
+<% } %>
 <%- include('../partials/footer') %>

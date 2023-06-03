@@ -35,4 +35,8 @@ router.delete('/chars/:id', ensureLoggedIn, charsCtrl.delete);
 // POST /campaigns/:id/chars
 router.post('/campaigns/:id/chars', ensureLoggedIn, charsCtrl.addToCampaign);
 
+// ! Need an removeFromCampaign
+// POST /campaigns/:id/chars
+router.put('/campaigns/:id/chars', ensureLoggedIn, charsCtrl.removeFromCampaign);
+
 module.exports = router;
