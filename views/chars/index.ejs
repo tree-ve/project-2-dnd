@@ -2,6 +2,9 @@
 <% if (user) { %>
   <p>user._id: <%= user._id %></p>
   <p>user.chars: <%= user.chars %></p>
+  <p>chars.campaign: <%= chars.campaign %></p>
+  <p>campaigns: <%= campaigns %></p>
+  
 
 <% } %>
 <table id="list">
@@ -26,9 +29,18 @@
             <td><%= c.race[0].toUpperCase() + c.race.substring(1) %></td>
             <td><%= c.level %></td>
             <td><%= c.class[0].toUpperCase() + c.class.substring(1) %></td>
-            <td><%= c.campaign %></td>
+            <!-- <td><%= c.campaign %></td> -->
+            <td>c.campaign: <%= c.campaign %></td>
+            <% campaigns.forEach(function(ca) { %>
+              <p><% console.log(c.campaign, ca._id) %></p>
+              <% if (c.campaign !== (ca._id)) { console.log('hi') } %>
+              <td>c.campaign: <%= c.campaign %> | ca._id: <%= ca._id %></td>
+              <% if (c.campaign === (ca._id)) { %>
+                <p>ca.name: <%= ca.name %></p>
+              <% } %>
+            <% }); %>
             <td><a href="/chars/<%= c._id %>">DETAILS</a></td>
-            <td><small><%= c.user %></small></td>
+            <!-- <td><small><%= c.user %></small></td> -->
             <td>
               <form action="/chars/<%= c._id %>?_method=DELETE" method="POST">
                 <button type="submit">X</button>

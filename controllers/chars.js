@@ -98,7 +98,8 @@ async function removeFromCampaign(req, res) {
 async function index(req, res) {
   console.log('chars index');
   const chars = await Char.find({});
-  res.render('chars/index', { title: 'My Characters', chars });
+  const campaigns = await Campaign.find({});
+  res.render('chars/index', { title: 'My Characters', chars, campaigns });
 }
 
 async function deleteChar(req, res) {
