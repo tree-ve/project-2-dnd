@@ -14,12 +14,26 @@ module.exports = {
 };
 
 async function index(req, res) {
+  console.log('campaign/index')
   const campaigns = await Campaign.find({});
+  // console.log(campaigns.length)
+  // const campaignChars = await Char.find({ campaign: req.params.id });
+  for (i = 0; i < campaigns.length; i++) {
+    console.log('1: ', campaigns[i])
+    const campaignChars = await Char.find({ campaign: campaigns[i]._id });
+    const num = campaignChars.length
+    campaigns[i].charNum = num
+    console.log('2: ', campaignChars.length)
+    console.log('3: ', campaigns[i])
+    // Maybe assign this number to the now empty chars array in campaigns
+    // await char.save();
+    // await campaigns.save()
+  }
   res.render('campaigns/index', { title: 'All Campaigns', campaigns });
 }
 
 async function addToChar(req, res) {
-  console.log('addToChar')
+  console.log('campaign addToChar')
   const char = await Char.findById(req.params.id);
   // console.log('char', char)
   console.log('req.params.id ->', req.params.id)
@@ -44,27 +58,43 @@ async function addToChar(req, res) {
 }
 
 async function deleteCampaign(req, res) {
-  console.log('delete');
-  // console.log('req.params.id ->', req.params.id)
-  // console.log('req.user._id ->', req.user._id)
-  // const char = await Char.findOne({ _id: req.params.id, 'chars.user': req.user._id});
-  // const char = await Char.findOne({ _id: req.params.id })
-  // const user = await User.findOne({ 'user._id': req.params.id, 'chars.owner': req.user._id});
+  console.log('campaign deleteCampaign');
+  console.log('req.params.id ->', req.params.id)
+  console.log('req.user._id ->', req.user._id)
+  const user = await User.findOne({ 'user._id': req.params.id, 'chars.owner': req.user._id});
   const campaign = await Campaign.findById(req.params.id);
-  // console.log(req.user._id, campaign.owner);
+  const campaignChars = await Char.find({ campaign: req.params.id });
+  // console.log('campaignChars', campaignChars);
+  console.log(campaignChars.length);
+  for (i = 0; i < campaignChars.length; i++) {
+    // console.log(campaignChars[i]._id)
+    const char = await Char.findById(campaignChars[i]._id)
+    // console.log('1', char.name, char.campaign)
+    // console.log('2', campaignChars[i].name, campaignChars[i].campaign)
+    // campaignChars[i].campaign = undefined;
+    char.campaign = undefined;
+    // console.log('3', char.name, char.campaign)
+    // console.log('4', campaignChars[i].name, campaignChars[i].campaign)
+    await char.save();
+  }
+  // await campaignChars.save();
+  
   if (!campaign) {
     console.log('not valid campaign?');
     return res.redirect('/campaigns')
   };
-  // char.remove(req.params.id)
+
   campaign.deleteOne(
     { _id: req.params.id }
   )
+
+  // await char.save();
   // await user.save();
   res.redirect('/campaigns');
 }
 
 async function show(req, res) {
+  console.log('campaign/show')
   // Populate the cast array with performer docs instead of ObjectIds
   const campaign = await Campaign.findById(req.params.id);
 
@@ -73,28 +103,29 @@ async function show(req, res) {
   for (i = 0; i < req.user.chars.length; i++) {
     const userChar = await Char.findById(req.user.chars[i]);
     userCharsArr.push(userChar)
-    console.log(userChar.name)
+    // console.log(userChar.name)
   }
   const chars = await Char.find({ _id: userCharsArr });//   .sort('name');
   // const usersChars = await Char.find({ _id: { $nin: campaign.chars }, campaign: { $exists: false } });//   .sort('name');
   // const campaignChars = await Char.find({ _id: campaign.chars });//   .sort('name');
   const usersChars = await Char.find({ campaign: { $exists: false } });
-  console.log('usersChars -> ', usersChars)
+  // console.log('usersChars -> ', usersChars)
   const campaignChars = await Char.find({ campaign: campaign });
-  console.log('campaignChars -> ', campaignChars)
-  console.log('campaign ->', campaign);
+  // console.log('campaignChars -> ', campaignChars)
+  // console.log('campaign ->', campaign);
   // const chars = await Char.find({ _id: { $nin: campaign.chars } }).sort('name');
-  res.render('campaigns/show', { title: 'Campaign Details', campaign, chars, usersChars, campaignChars });
+  res.render('campaigns/show', { title: campaign.name, campaign, chars, usersChars, campaignChars });
 }
 
 function newCampaign(req, res) {
+  console.log('campaign newCampaign')
   // We'll want to be able to render an  
   // errorMsg if the create action fails
   res.render('campaigns/new', { title: 'New Campaign', errorMsg: '' });
 }
 
 async function create(req, res) {
-  console.log('create');
+  console.log('campaign create');
   const user = await User.findById(req.params.id);
 
   console.log('req.params.id ->', req.params.id)
@@ -124,7 +155,7 @@ async function create(req, res) {
 }
 
 async function edit(req, res, next) {
-  console.log('edit')
+  console.log('campaign edit')
   try {
     const campaign = await Campaign.findById(req.params.id);
     res.render('campaigns/edit', { title: `Edit Campaign: ${campaign.name}`, campaign, errorMsg: '' });
@@ -134,7 +165,7 @@ async function edit(req, res, next) {
 }
 
 async function update(req, res) {
-  console.log('update')
+  console.log('campaign update')
   const campaign = await Campaign.findById(req.params.id);
   const usersChars = await Char.find({ campaign: { $exists: false } });
   const campaignChars = await Char.find({ campaign: campaign });

@@ -2,10 +2,10 @@
 <% if (user) { %>
     <h2>
         <% activeCampaign.forEach(function(campaign) { %>
-            <div>Campaign: <%= campaign.name %></div>
+            <a href="/campaigns/<%= campaign._id %>">Campaign: <%= campaign.name %></a>
         <% }); %>
     </h2>
-    <div><%= char._id %></div>
+    <div>char._id: <%= char._id %></div>
     <section id="show-page">
         <div><%= char.race %></div>
         <div><%= char.class[0].toUpperCase() + char.class.substring(1) %></div>
@@ -48,17 +48,7 @@
         <div><small><%= (cha < 0 ? '':'+') + cha %></small></div>
     </section>
     <br>
-    <section>
-        <div>Add to Campaign: </div>
-        <form id="add-campaign-to-char" action="/chars/<%= char._id %>/campaigns" method="POST">
-            <select name="campaignId">
-                <% campaigns.forEach(function(campaign) { %>
-                        <option value="<%= campaign._id %>"><%= campaign.name %></option>
-                <% }); %>
-            </select>
-            <button type="submit">Add to Campaign</button>
-        </form>
-    </section>
+    
     <br>
     <section>
         <% if (user?._id.equals(char.user)) { %>

@@ -1,6 +1,7 @@
 <%- include('../partials/header') %>
 <% if (user) { %>
   <p>user._id: <%= user._id %></p>
+  <td><%= campaigns.chars %></td>
 <% } %>
 <table id="list">
   <thead>
@@ -18,7 +19,7 @@
       <% campaigns.forEach(function(c) { %>
         <tr>
           <td><%= c.name %></td>
-          <td>charInt</td>
+          <td><%= c.charNum %></td>
           <td><%= c.ownerName %></td>
           <td><a href="/campaigns/<%= c._id %>">DETAILS</a></td>
           <td><small><%= c.owner %></small></td>

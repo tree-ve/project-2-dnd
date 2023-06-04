@@ -1,6 +1,6 @@
 <%- include('../partials/header') %>
 
-<p><%= campaign.name %></p>
+<!-- <p><%= campaign.name %></p> -->
 <p><%= campaign._id %></p>
 
 <section id="show-page">
@@ -9,7 +9,9 @@
             <% campaignChars.forEach(function(character) { %>
                 <div><%= character.name %>: Level <%= character.level %> <%= character.race %> <%= character.class %></div>
                 <a href="/chars/<%= character._id %>">DETAILS</a>
-                <a href="/campaigns/<%= campaign._id %>/chars" method="PUT">X</a>
+                <form action="/campaigns/<%= campaign._id %>/chars?_method=PUT" method="POST">
+                    <button type="submit" name="charId" value="<%= character._id %>">X</button>
+                </form>
             <% }); %>
             <br>
             <form id="add-char-to-campaign" action="/campaigns/<%= campaign._id %>/chars" method="POST">

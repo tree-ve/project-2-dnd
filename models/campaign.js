@@ -11,6 +11,9 @@ const campaignSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Chars'
   }],
+  charNum: {
+    type: Number
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'User',

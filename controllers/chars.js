@@ -37,8 +37,8 @@ async function addToUser(req, res) {
 
 }
 
-async function addToCampaign(req, res) {
-  console.log('addToCampaign')
+async function addToCampaign(req, res, next) {
+  console.log('chars addToCampaign')
   const campaign = await Campaign.findById(req.params.id);
   console.log('campaign', campaign)
   console.log('req.params.id ->', req.params.id)
@@ -49,43 +49,60 @@ async function addToCampaign(req, res) {
   const char = await Char.findById(req.body.charId); // maybe change chars back to charId
   console.log('char ->', char);
   // ? campaign.chars.push(req.body.chars);
-  char.campaign = {}
-  console.log('char.campaign ->', char.campaign);
-  char.campaign = campaign
-  console.log('char.campaign ->', char.campaign);
-  await char.save();
+  try {
+    char.campaign = {}
+    console.log('char.campaign ->', char.campaign);
+    char.campaign = campaign
+    console.log('char.campaign ->', char.campaign);
+    await char.save();
+    res.redirect(`/campaigns/${campaign._id}`);
+  } catch (err) {
+    res.redirect(`/campaigns/${campaign._id}`);
+    next()
+  }
   console.log('char ->', char);
-  res.redirect(`/campaigns/${campaign._id}`);
+  // res.redirect(`/campaigns/${campaign._id}`);
   console.log('campaign', campaign)
 }
 
 async function removeFromCampaign(req, res) {
-  console.log('removeFromCampaign')
+  console.log('chars removeFromCampaign')
   const campaign = await Campaign.findById(req.params.id);
   console.log('campaign', campaign)
   console.log('req.params.id ->', req.params.id)
   // console.log('user ->', user)
   console.log('req.body.charId ->', req.body.charId) // maybe change chars back to charId
-  console.log('req ->', req)
+  // console.log('req ->', req)
   // The chars array holds the characters's ObjectId (referencing)
-  const char = Char.findById(req.body.charId); // maybe change chars back to charId
-  // console.log(char);
-  char.campaign = {}
+  const char = await Char.findById(req.body.charId); // maybe change chars back to charId
+  console.log('char ->', char);
+  // console.log('doing char.campaign = {}')
+  for (const key in char.campaign) {
+    console.log(char.campaign)
+    char.campaign = undefined;
+    // update(req, res, { _id: req.body.charId }, { $unset: {campaign: 1 } });
+    // update(req, res, { _id: req.body.charId }, { $unset: {campaign: 1 } });
+    console.log(char.campaign)
+  }
+  // char.campaign = {}
+  await char.save();
+  // console.log('done char.campaign = {}')
+  console.log('char ->', char);
   console.log('char.campaign ->', char.campaign);
   // campaign.chars.remove(req.body.chars);
   await campaign.save();
   res.redirect(`/campaigns/${campaign._id}`);
-  console.log('campaign', campaign)
+  // console.log('campaign', campaign)
 }
 
 async function index(req, res) {
-  console.log('index');
+  console.log('chars index');
   const chars = await Char.find({});
   res.render('chars/index', { title: 'My Characters', chars });
 }
 
 async function deleteChar(req, res) {
-  console.log('delete');
+  console.log('chars delete');
   // console.log('req.params.id ->', req.params.id)
   // console.log('req.user._id ->', req.user._id)
   // const user = await User.findOne({ 'user._id': req.params.id, 'chars.user': req.user._id});
@@ -112,7 +129,7 @@ async function deleteChar(req, res) {
 }
 
 async function show(req, res) {
-  console.log('show');
+  console.log('chars show');
   const char = await Char.findById(req.params.id);//.populate('campaign');
   const activeCampaign = await Campaign.find({ _id: char.campaign })
   const campaigns = await Campaign.find({ _id: { $nin: char.campaign } })// .sort('name');
@@ -132,9 +149,9 @@ async function show(req, res) {
   //!
 
   // console.log(req.params.id);
-  console.log(char)
-  console.log(activeCampaign);
-  console.log(char.campaign)
+  console.log('char -> ', char)
+  console.log('activeCampaign -> ', activeCampaign);
+  console.log('char.campaign -> ', char.campaign)
   // const campaigns = await Campaign.find({ _id: { $nin: char.campaign } }).sort('name');
   // res.render('chars/show', { title: char.name, char, campaigns });
   res.render('chars/show', { title: char.name, char, campaigns, activeCampaign });
@@ -142,7 +159,7 @@ async function show(req, res) {
 }
 
 function newChar(req, res) {
-  console.log('new');
+  console.log('chars new');
   // We'll want to be able to render an  
   // errorMsg if the create action fails
   res.render('chars/new', { title: 'New Character', errorMsg: '' });
@@ -150,7 +167,7 @@ function newChar(req, res) {
 
 
 async function create(req, res) {
-  console.log('create');
+  console.log('chars create');
   const user = await User.findById(req.params.id);
 
   console.log('req.params.id ->', req.params.id)
@@ -178,7 +195,7 @@ async function create(req, res) {
 }
 
 async function edit(req, res, next) {
-  console.log('edit')
+  console.log('chars edit')
   try {
     const char = await Char.findById(req.params.id);
     res.render('chars/edit', { title: `Edit Character: ${char.name}`, char, errorMsg: '' });
@@ -188,7 +205,8 @@ async function edit(req, res, next) {
 }
 
 async function update(req, res) {
-  console.log('update')
+  console.log('chars update')
+  console.log(req.params.id);
   const char = await Char.findById(req.params.id);
   try {
     const charInfo = await Char.findById(req.params.id);
