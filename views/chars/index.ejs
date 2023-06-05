@@ -1,23 +1,24 @@
 <%- include('../partials/header') %>
 <% if (user) { %>
-  <p>user._id: <%= user._id %></p>
-  <p>user.chars: <%= user.chars %></p>
-  <p>chars.campaign: <%= chars.campaign %></p>
-  <p>campaigns: <%= campaigns %></p>
+  <!-- <p>user._id: <%= user._id %></p> -->
+  <!-- <p>user.chars: <%= user.chars %></p> -->
+  <!-- <p>chars.campaign: <%= chars.campaign %></p> -->
+  <!-- <p>campaigns: <%= campaigns %></p> -->
   
 
 <% } %>
 <table id="list">
   <thead>
     <tr>
+      <td></td>
       <th>Name</th>
       <th>Race</th>
       <th>Level</th>
       <th>Class</th>
       <th>Campaign</th>
-      <th></th>
-      <th><small>User</small></th>
-      <th></th>
+      <!-- <th></th> -->
+      <!-- <th><small>User</small></th> -->
+      <!-- <th></th> -->
     </tr>
   </thead>
   <% if (user) { %>
@@ -25,28 +26,24 @@
       <% chars.forEach(function(c) { %>
         <% if (user?._id.equals(c.user)) { %>
           <tr>
+            <td><a href="/chars/<%= c._id %>">DETAILS</a></td>
             <td><%= c.name[0].toUpperCase() + c.name.substring(1) %></td>
             <td><%= c.race[0].toUpperCase() + c.race.substring(1) %></td>
             <td><%= c.level %></td>
             <td><%= c.class[0].toUpperCase() + c.class.substring(1) %></td>
-            <!-- <td><%= c.campaign %></td> -->
-            <td>c.campaign: <%= c.campaign %></td>
-            <% campaigns.forEach(function(ca) { %>
-              <p><% console.log(c.campaign, ca._id) %></p>
-              <% if (c.campaign !== (ca._id)) { console.log('hi') } %>
-              <td>c.campaign: <%= c.campaign %> | ca._id: <%= ca._id %></td>
-              <% if (c.campaign === (ca._id)) { %>
-                <p>ca.name: <%= ca.name %></p>
+            <td><% campaigns.forEach(function(ca) { %>
+              <% if (ca?._id.equals(c.campaign)) { %>
+                <a href="/campaigns/<%= ca._id %>"><%= ca.name %></a>
+              <% } else if (c.campaign === undefined) { %>
               <% } %>
-            <% }); %>
-            <td><a href="/chars/<%= c._id %>">DETAILS</a></td>
-            <!-- <td><small><%= c.user %></small></td> -->
-            <td>
+            <% }); %></td>
+            <!-- <td><a href="/chars/<%= c._id %>">DETAILS</a></td> -->
+            <!-- <td>
               <form action="/chars/<%= c._id %>?_method=DELETE" method="POST">
                 <button type="submit">X</button>
               </form>
-            </td>
-            </tr>
+            </td> -->
+          </tr>
         <% } %>
       <% }); %>
     </tbody>
@@ -55,9 +52,7 @@
 <br>
 <section>
   <% if (user) { %>
-      <button>
-          <a href="/chars/new">CREATE A CHARACTER</a>
-      </button> 
+      <button class="user-options-button"><a href="/chars/new">CREATE A CHARACTER</a></button> 
   <% } %>
 </section>
 

@@ -19,17 +19,14 @@ async function index(req, res) {
   // console.log(campaigns.length)
   // const campaignChars = await Char.find({ campaign: req.params.id });
   for (i = 0; i < campaigns.length; i++) {
-    console.log('1: ', campaigns[i])
     const campaignChars = await Char.find({ campaign: campaigns[i]._id });
     const num = campaignChars.length
     campaigns[i].charNum = num
-    console.log('2: ', campaignChars.length)
-    console.log('3: ', campaigns[i])
     // Maybe assign this number to the now empty chars array in campaigns
     // await char.save();
     // await campaigns.save()
   }
-  res.render('campaigns/index', { title: 'All Campaigns', campaigns });
+  res.render('campaigns/index', { title: 'My Campaigns', campaigns });
 }
 
 async function addToChar(req, res) {
@@ -105,12 +102,12 @@ async function show(req, res) {
     userCharsArr.push(userChar)
     // console.log(userChar.name)
   }
-  const chars = await Char.find({ _id: userCharsArr });//   .sort('name');
+  const chars = await Char.find({ _id: userCharsArr });
   // const usersChars = await Char.find({ _id: { $nin: campaign.chars }, campaign: { $exists: false } });//   .sort('name');
   // const campaignChars = await Char.find({ _id: campaign.chars });//   .sort('name');
   const usersChars = await Char.find({ campaign: { $exists: false } });
   // console.log('usersChars -> ', usersChars)
-  const campaignChars = await Char.find({ campaign: campaign });
+  const campaignChars = await Char.find({ campaign: campaign }).sort('name');
   // console.log('campaignChars -> ', campaignChars)
   // console.log('campaign ->', campaign);
   // const chars = await Char.find({ _id: { $nin: campaign.chars } }).sort('name');
@@ -126,32 +123,20 @@ function newCampaign(req, res) {
 
 async function create(req, res) {
   console.log('campaign create');
-  const user = await User.findById(req.params.id);
-
-  console.log('req.params.id ->', req.params.id)
-  console.log('user ->', user)
-  // Add the user-centric info to req.body (the new review)
-  req.body.owner = req.user._id;
-  req.body.ownerName = req.user.name;
-  console.log('req.body.user ->', req.body.owner)
-  console.log('req.body.user ->', req.body.ownerName)
-  // req.body.userName = req.user.name;
-  // req.body.userAvatar = req.user.avatar;
-
-  // We can push (or unshift) subdocs into Mongoose arrays
-  console.log('req.body ->', req.body)
-  const campaign = await Campaign.create(req.body);
-  // ? user.chars.push(req.body);
   try {
+    const user = await User.findById(req.params.id);
+    req.body.owner = req.user._id;
+    req.body.ownerName = req.user.name;
+    const campaign = await Campaign.create(req.body);
+    // ? user.chars.push(req.body);
     await campaign.save();
+    console.log('penultimate campaign create try');
     res.redirect(`/campaigns/${campaign._id}`, { title: campaign.name, campaign });
   } catch (err) {
-    console.log(err);
-    res.render('campaigns/new', { title: 'New Campaign broke', errorMsg: err.message });
+    console.log('err', err.message);
+    console.log('penultimate campaign create err');
+    res.render('campaigns/new', { title: 'New Campaign', errorMsg: err.message });
   }
-  // Step 5:  Respond to the Request (redirect if data has been changed)
-  // res.redirect(`/campaigns`);
-  res.redirect(`/campaigns/${campaign._id}`);
 }
 
 async function edit(req, res, next) {

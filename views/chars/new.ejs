@@ -1,46 +1,60 @@
 <%- include('../partials/header') %>
 
-<form id="new-form" action="/users/<%= user._id %>/chars" method="POST">
-    <label>Name: </label>
-    <input type="text" name="name">
-    <label>Race: </label>
-    <input type="text" name="race">
-    <label>Level: </label>
-    <input type="number" name="level">
-    <label>Class: </label>
-    <select name="class">
-        <option value="artificer">artificer</option>
-        <option value="barbarian">barbarian</option>
-        <option value="bard">bard</option>
-        <option value="cleric">cleric</option>
-        <option value="druid">druid</option>
-        <option value="fighter">fighter</option>
-        <option value="monk">monk</option>
-        <option value="paladin">paladin</option>
-        <option value="ranger">ranger</option>
-        <option value="rogue">rogue</option>
-        <option value="sorcerer">sorcerer</option>
-        <option value="warlock">warlock</option>
-        <option value="wizard">wizard</option>
-    </select>
-    <label>HP: </label>
-    <input type="number" name="hp">
-    <label>AC: </label>
-    <input type="number" name="ac">
-    <label>Strength: </label>
-    <input type="number" name="str">
-    <label>Dexterity: </label>
-    <input type="number" name="dex">
-    <label>Constitution: </label>
-    <input type="number" name="con">
-    <label>Intelligence: </label>
-    <input type="number" name="int">
-    <label>Wisdom: </label>
-    <input type="number" name="wis">
-    <label>Charisma: </label>
-    <input type="number" name="cha">
+<form action="/users/<%= user._id %>/chars" method="POST">
+    <div id="edit-name">Name: <input type="text" name="name"></div>
+    <section id="show-char">
+        <div>Level: <input type="number" name="level"></div>
+        <div>Race: <input type="text" name="race"></div>
+        <div>Class:
+        <select name="class">
+            <option value="artificer">Artificer</option>
+            <option value="barbarian">Barbarian</option>
+            <option value="bard">Bard</option>
+            <option value="cleric">Cleric</option>
+            <option value="druid">Druid</option>
+            <option value="fighter">Fighter</option>
+            <option value="monk">Monk</option>
+            <option value="paladin">Paladin</option>
+            <option value="ranger">Ranger</option>
+            <option value="rogue">Rogue</option>
+            <option value="sorcerer">Sorcerer</option>
+            <option value="warlock">Warlock</option>
+            <option value="wizard">Wizard</option>
+        </select>
+        </div>
+    </section>
+    <section id="hp-ac">
+        <div>HP: <input type="number" name="hp"></div>
+        <div>AC: <input type="number" name="ac"></div>
+    </section>
 
-    <input type="submit" value="Create Character">
+    <section id="stats">
+        <div>Strength: <br>
+        <input type="number" name="str">
+        <small></small></div>
+
+        <div>Dexterity: <br>
+        <input type="number" name="dex">
+        <small></small></div>
+
+        <div>Constitution: <br>
+        <input type="number" name="con">
+        <small></small></div>
+
+        <div>Intelligence: <br>
+        <input type="number" name="int">
+        <small></small></div>
+
+        <div>Wisdom: <br>
+        <input type="number" name="wis">
+        <small></small></div>
+
+        <div>Charisma: <br>
+        <input type="number" name="cha">
+        <small></small></div>
+
+    </section>
+    <button class="char-edit-button" type="submit">CREATE CHARACTER</button>
 </form>
 
 <p><%= errorMsg %></p>

@@ -40,55 +40,55 @@ async function addToUser(req, res) {
 async function addToCampaign(req, res, next) {
   console.log('chars addToCampaign')
   const campaign = await Campaign.findById(req.params.id);
-  console.log('campaign', campaign)
-  console.log('req.params.id ->', req.params.id)
+  // console.log('campaign', campaign)
+  // console.log('req.params.id ->', req.params.id)
   // console.log('user ->', user)
-  console.log('req.body.charId ->', req.body.charId) // maybe change chars back to charId
+  // console.log('req.body.charId ->', req.body.charId) // maybe change chars back to charId
   // console.log('req ->', req)
   // The chars array holds the characters's ObjectId (referencing)
   const char = await Char.findById(req.body.charId); // maybe change chars back to charId
-  console.log('char ->', char);
+  // console.log('char ->', char);
   // ? campaign.chars.push(req.body.chars);
   try {
     char.campaign = {}
-    console.log('char.campaign ->', char.campaign);
+    // console.log('char.campaign ->', char.campaign);
     char.campaign = campaign
-    console.log('char.campaign ->', char.campaign);
+    // console.log('char.campaign ->', char.campaign);
     await char.save();
     res.redirect(`/campaigns/${campaign._id}`);
   } catch (err) {
     res.redirect(`/campaigns/${campaign._id}`);
     next()
   }
-  console.log('char ->', char);
+  // console.log('char ->', char);
   // res.redirect(`/campaigns/${campaign._id}`);
-  console.log('campaign', campaign)
+  // console.log('campaign', campaign)
 }
 
 async function removeFromCampaign(req, res) {
   console.log('chars removeFromCampaign')
   const campaign = await Campaign.findById(req.params.id);
-  console.log('campaign', campaign)
-  console.log('req.params.id ->', req.params.id)
+  // console.log('campaign', campaign)
+  // console.log('req.params.id ->', req.params.id)
   // console.log('user ->', user)
-  console.log('req.body.charId ->', req.body.charId) // maybe change chars back to charId
+  // console.log('req.body.charId ->', req.body.charId) // maybe change chars back to charId
   // console.log('req ->', req)
   // The chars array holds the characters's ObjectId (referencing)
   const char = await Char.findById(req.body.charId); // maybe change chars back to charId
-  console.log('char ->', char);
+  // console.log('char ->', char);
   // console.log('doing char.campaign = {}')
   for (const key in char.campaign) {
-    console.log(char.campaign)
+    // console.log(char.campaign)
     char.campaign = undefined;
     // update(req, res, { _id: req.body.charId }, { $unset: {campaign: 1 } });
     // update(req, res, { _id: req.body.charId }, { $unset: {campaign: 1 } });
-    console.log(char.campaign)
+    // console.log(char.campaign)
   }
   // char.campaign = {}
   await char.save();
   // console.log('done char.campaign = {}')
-  console.log('char ->', char);
-  console.log('char.campaign ->', char.campaign);
+  // console.log('char ->', char);
+  // console.log('char.campaign ->', char.campaign);
   // campaign.chars.remove(req.body.chars);
   await campaign.save();
   res.redirect(`/campaigns/${campaign._id}`);
@@ -169,37 +169,37 @@ function newChar(req, res) {
 
 async function create(req, res) {
   console.log('chars create');
-  const user = await User.findById(req.params.id);
-
-  console.log('req.params.id ->', req.params.id)
-  console.log('user ->', user)
-  // Add the user-centric info to req.body (the new review)
-  req.body.user = req.user._id;
-  console.log('req.body.user ->', req.body.user)
-  // We can push (or unshift) subdocs into Mongoose arrays
-  console.log('req.body ->', req.body)
-  const char = await Char.create(req.body);
-  // const body = formatBody(req.body);
-  user.chars.push(char);
   try {
+    const user = await User.findById(req.params.id);
+
+    console.log('req.params.id ->', req.params.id)
+    console.log('user ->', user)
+    // Add the user-centric info to req.body (the new review)
+    req.body.user = req.user._id;
+    console.log('req.body.user ->', req.body.user)
+    // We can push (or unshift) subdocs into Mongoose arrays
+    console.log('req.body ->', req.body)
+    const char = await Char.create(req.body);
+    // const body = formatBody(req.body);
+    user.chars.push(char);
     await user.save();
     res.redirect(`/chars/${char._id}`, { title: char.name, char });
     // res.redirect(`/chars`, { title: 'All Characters - post create' });
     // res.redirect(`/chars/${user._id}`, { title: 'All Characters - post create' });
   } catch (err) {
-    console.log(err);
-    res.render('chars/new', { title: 'New Char broke', errorMsg: err.message });
+    console.log('err', err.message);
+    res.render('chars/new', { title: 'New Character', errorMsg: err.message });
   }
   // Step 5:  Respond to the Request (redirect if data has been changed)
   // res.redirect(`/chars`);
-  res.redirect(`/chars/${char._id}`);
+  // res.redirect(`/chars/${char._id}`);
 }
 
 async function edit(req, res, next) {
   console.log('chars edit')
   try {
     const char = await Char.findById(req.params.id);
-    res.render('chars/edit', { title: `Edit Character: ${char.name}`, char, errorMsg: '' });
+    res.render('chars/edit', { title: `Edit Character`, char, errorMsg: '' });
   } catch (error) {
     next()
   }
@@ -209,12 +209,13 @@ async function update(req, res) {
   console.log('chars update')
   console.log(req.params.id);
   const char = await Char.findById(req.params.id);
+  const activeCampaign = await Campaign.find({ _id: char.campaign })
   try {
     const charInfo = await Char.findById(req.params.id);
     const body = formatBody(req.body);
     Object.assign(charInfo, body);
     await charInfo.save()
-    res.render('chars/show', { title: charInfo.name, char: charInfo.toObject() })
+    res.render('chars/show', { title: charInfo.name, char: charInfo.toObject(), activeCampaign })
   } catch (err) {
     res.render('chars/edit', { title: `Edit Character: ${char.name}`, char, errorMsg: err.message });
   }

@@ -1,35 +1,37 @@
 <%- include('../partials/header') %>
 <% if (user) { %>
-  <p>user._id: <%= user._id %></p>
-  <td><%= campaigns.chars %></td>
+  <!-- <p>user._id: <%= user._id %></p> -->
+  <!-- <td><%= campaigns.chars %></td> -->
 <% } %>
 <table id="list">
   <thead>
     <tr>
+      <td></td>
       <th>Name</th>
       <th>Players</th>
       <th>Owner</th>
-      <th></th>
-      <th><small>OwnerID</small></th>
-      <th></th>
+      <!-- <th></th> -->
+      <!-- <th><small>OwnerID</small></th> -->
+      <td></td>
     </tr>
   </thead>
   <% if (user) { %>
     <tbody>
       <% campaigns.forEach(function(c) { %>
         <tr>
+          <td><a href="/campaigns/<%= c._id %>">DETAILS</a></td>
           <td><%= c.name %></td>
           <td><%= c.charNum %></td>
           <td><%= c.ownerName %></td>
-          <td><a href="/campaigns/<%= c._id %>">DETAILS</a></td>
-          <td><small><%= c.owner %></small></td>
-          <td>
+          <!-- <td><a href="/campaigns/<%= c._id %>">DETAILS</a></td> -->
+          <!-- <td><small><%= c.owner %></small></td> -->
+          <!-- <td>
             <% if (user?._id.equals(c.owner)) { %>
               <form action="/campaigns/<%= c._id %>?_method=DELETE" method="POST">
                 <button type="submit">X</button>
               </form>
             <% } %>
-          </td>
+          </td> -->
         </tr>
       <% }); %>
     </tbody>
@@ -38,9 +40,7 @@
 <br>
 <section>
   <% if (user) { %>
-      <button>
-          <a href="/campaigns/new">CREATE CAMPAIGN</a>
-      </button> 
+      <button class="user-options-button"><a href="/campaigns/new">CREATE CAMPAIGN</a></button> 
   <% } %>
 </section>
 

@@ -1,58 +1,66 @@
 <%- include('../partials/header') %>
 
 <form action="/chars/<%= char._id %>?_method=PUT" method="POST">
-  <label>Name:
-    <input type="text" name="name" value="<%= char.name %>">
-  </label><br>
-  <label>Race:
-    <input type="text" name="race" value="<%= char.race %>">
-  </label><br>
-  <label>Level:
-    <input type="number" name="level" value="<%= char.level %>">
-  </label><br>
-  <label>Class:
-    <select name="class">
-      <option value="artificer">artificer</option>
-      <option value="barbarian">barbarian</option>
-      <option value="bard">bard</option>
-      <option value="cleric">cleric</option>
-      <option value="druid">druid</option>
-      <option value="fighter">fighter</option>
-      <option value="monk">monk</option>
-      <option value="paladin">paladin</option>
-      <option value="ranger">ranger</option>
-      <option value="rogue">rogue</option>
-      <option value="sorcerer">sorcerer</option>
-      <option value="warlock">warlock</option>
-      <option value="wizard">wizard</option>
-  </select>
-  </label><br>
-  <label>HP:
-    <input type="number" name="hp" value="<%= char.hp %>">
-  </label><br>
-  <label>AC:
-    <input type="number" name="ac" value="<%= char.ac %>">
-  </label><br>
-  <label>Strength:
+  <div id="edit-name">Name: <input type="text" name="name" value="<%= char.name %>"></div>
+  <section id="show-char">
+    <div>Level: <input type="number" name="level" value="<%= char.level %>"></div>
+    <div>Race: <input type="text" name="race" value="<%= char.race %>"></div>
+    <div>Class:
+      <select name="class">
+        <option value="artificer"<%= char.class === 'artificer' ? 'selected' : '' %>>Artificer</option>
+        <option value="barbarian"<%= char.class === 'barbarian' ? 'selected' : '' %>>Barbarian</option>
+        <option value="bard"<%= char.class === 'bard' ? 'selected' : '' %>>Bard</option>
+        <option value="cleric"<%= char.class === 'cleric' ? 'selected' : '' %>>Cleric</option>
+        <option value="druid"<%= char.class === 'druid' ? 'selected' : '' %>>Druid</option>
+        <option value="fighter"<%= char.class === 'fighter' ? 'selected' : '' %>>Fighter</option>
+        <option value="monk"<%= char.class === 'monk' ? 'selected' : '' %>>Monk</option>
+        <option value="paladin"<%= char.class === 'paladin' ? 'selected' : '' %>>Paladin</option>
+        <option value="ranger"<%= char.class === 'ranger' ? 'selected' : '' %>>Ranger</option>
+        <option value="rogue"<%= char.class === 'rogue' ? 'selected' : '' %>>Rogue</option>
+        <option value="sorcerer"<%= char.class === 'sorcerer' ? 'selected' : '' %>>Sorcerer</option>
+        <option value="warlock"<%= char.class === 'warlock' ? 'selected' : '' %>>Warlock</option>
+        <option value="wizard"<%= char.class === 'wizard' ? 'selected' : '' %>>Wizard</option>
+    </select>
+    </div>
+  </section>
+  
+  <section id="hp-ac">
+    <div>HP: <input type="number" name="hp" value="<%= char.hp %>"></div>
+    <div>AC: <input type="number" name="ac" value="<%= char.ac %>"></div>
+  </section>
+  <section id="stats">
+    <div>Strength: <br>
     <input type="number" name="str" value="<%= char.str %>">
-  </label><br>
-  <label>Dexterity:
-    <input type="number" name="dex" value="<%= char.dex %>">
-  </label><br>
-  <label>Constitution:
-    <input type="number" name="con" value="<%= char.con %>">
-  </label><br>
-  <label>Intelligence:
-    <input type="number" name="int" value="<%= char.int %>">
-  </label><br>
-  <label>Wisdom:
-    <input type="number" name="wis" value="<%= char.wis %>">
-  </label><br>
-  <label>Charisma:
-    <input type="number" name="cha" value="<%= char.cha %>">
-  </label><br>
+    <% let str = Math.floor((char.str - 10) / 2)%>
+    <small></small></div>
 
-  <input type="submit" value="Save Changes">
+    <div>Dexterity: <br>
+    <input type="number" name="dex" value="<%= char.dex %>">
+    <% let dex = Math.floor((char.dex - 10) / 2)%>
+    <small></small></div>
+
+    <div>Constitution: <br>
+    <input type="number" name="con" value="<%= char.con %>">
+    <% let con = Math.floor((char.con - 10) / 2)%>
+    <small></small></div>
+
+    <div>Intelligence: <br>
+    <input type="number" name="int" value="<%= char.int %>">
+    <% let int = Math.floor((char.int - 10) / 2)%>
+    <small></small></div>
+
+    <div>Wisdom: <br>
+    <input type="number" name="wis" value="<%= char.wis %>">
+    <% let wis = Math.floor((char.wis - 10) / 2)%>
+    <small></small></div>
+
+    <div>Charisma: <br>
+    <input type="number" name="cha" value="<%= char.cha %>">
+    <% let cha = Math.floor((char.cha - 10) / 2)%>
+    <small></small></div>
+
+  </section>
+  <button class="char-edit-button" type="submit">SAVE CHANGES</button>
 
 </form>
 <p><%= errorMsg %></p>

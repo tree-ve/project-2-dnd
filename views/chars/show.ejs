@@ -5,58 +5,56 @@
             <a href="/campaigns/<%= campaign._id %>">Campaign: <%= campaign.name %></a>
         <% }); %>
     </h2>
-    <div>char._id: <%= char._id %></div>
-    <section id="show-page">
+    <section id="show-char">
+        <div>Level <%= char.level %></div>
+        <!-- <div><%= char.level %></div> -->
         <div><%= char.race %></div>
         <div><%= char.class[0].toUpperCase() + char.class.substring(1) %></div>
-        <div>Level: </div>
-        <div><%= char.level %></div>
-        <div>HP: </div>
-        <div><%= char.hp %></div>
-        <div>AC: </div>
-        <div><%= char.ac %></div>
+    </section>
+    <section id="hp-ac">
+        <div>HP: <%= char.hp %></div>
+        <div>AC: <%= char.ac %></div>
     </section>
     <section id="stats">
-        <div>Strength: </div>
-        <div><%= char.str %></div>
+        <div>Strength: <br>
+        <strong><%= char.str %></strong>
         <% let str = Math.floor((char.str - 10) / 2)%>
-        <div><small><%= (str < 0 ? '':'+') + str %></small></div>
+        <small><%= (str < 0 ? '':'+') + str %></small></div>
         
-        <div>Dexterity: </div>
-        <div><%= char.dex %></div>
+        <div>Dexterity: <br>
+        <strong><%= char.dex %></strong>
         <% let dex = Math.floor((char.dex - 10) / 2)%>
-        <div><small><%= (dex < 0 ? '':'+') + dex %></small></div>
+        <small><%= (dex < 0 ? '':'+') + dex %></small></div>
 
-        <div>Constitution: </div>
-        <div><%= char.con %></div>
+        <div>Constitution: <br>
+        <strong><%= char.con %></strong>
         <% let con = Math.floor((char.con - 10) / 2)%>
-        <div><small><%= (con < 0 ? '':'+') + con %></small></div>
+        <small><%= (con < 0 ? '':'+') + con %></small></div>
 
-        <div>Intelligence: </div>
-        <div><%= char.int %></div>
+        <div>Intelligence: <br>
+        <strong><%= char.int %></strong>
         <% let int = Math.floor((char.int - 10) / 2)%>
-        <div><small><%= (int < 0 ? '':'+') + int %></small></div>
+        <small><%= (int < 0 ? '':'+') + int %></small></div>
 
-        <div>Wisdom: </div>
-        <div><%= char.wis %></div>
+        <div>Wisdom: <br>
+        <strong><%= char.wis %></strong>
         <% let wis = Math.floor((char.wis - 10) / 2)%>
-        <div><small><%= (wis < 0 ? '':'+') + wis %></small></div>
+        <small><%= (wis < 0 ? '':'+') + wis %></small></div>
 
-        <div>Charisma: </div>
-        <div><%= char.cha %></div>
+        <div>Charisma: <br>
+        <strong><%= char.cha %></strong>
         <% let cha = Math.floor((char.cha - 10) / 2)%>
-        <div><small><%= (cha < 0 ? '':'+') + cha %></small></div>
+        <small><%= (cha < 0 ? '':'+') + cha %></small></div>
     </section>
     <br>
-    
     <br>
-    <section>
+    <section id="user-options">
         <% if (user?._id.equals(char.user)) { %>
-            <button>
+            <button class="user-options-button">
                 <a href="/chars/<%= char._id %>/edit">EDIT CHARACTER</a>
             </button> 
             <form action="/chars/<%= char._id %>?_method=DELETE" method="POST">
-                <button type="submit">DELETE CHARACTER</button>
+                <button class="user-options-button" type="submit">DELETE CHARACTER</button>
             </form>
         <% } %>
     </section>
