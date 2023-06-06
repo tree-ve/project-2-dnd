@@ -13,6 +13,10 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Char'
   }],
+  songs: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Song'
+  }],
 }, {
   timestamps: true
 });

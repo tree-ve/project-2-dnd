@@ -1,0 +1,27 @@
+<%- include('../partials/header') %>
+<% if (user) { %>
+    <p><%= song.description %></p>
+    <br>
+    <a href="<%= song.url %>"><%= song.url %></a>
+    <br>
+    <% if (song.campaigns.length > 0) { %>
+        <div>Used in: </div>
+        <% activeCampaigns.forEach(function(campaign) { %>
+            <a href="/campaigns/<%= campaign._id %>"><%= campaign.name %></a>
+        <% }); %>
+        <br>
+    <% } %>
+    <br>
+
+    <section id="user-options">
+        <% if (user?._id.equals(song.user)) { %>
+            <button class="user-options-button">
+                <a href="/songs/<%= song._id %>/edit">EDIT SONG</a>
+            </button> 
+            <form action="/songs/<%= song._id %>?_method=DELETE" method="POST">
+                <button class="user-options-button" type="submit">DELETE SONG</button>
+            </form>
+        <% } %>
+    </section>
+<% } %>
+<%- include('../partials/footer') %>

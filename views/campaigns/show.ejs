@@ -1,55 +1,75 @@
 <%- include('../partials/header') %>
 
-<!-- <p><%= campaign.name %></p> -->
-<!-- <p><%= campaign._id %></p> -->
-
 <% if (user) { %>
-<!-- <section id="show-campaign"> -->
-    <table id="chars-list">
-        <thead>
-            <tr>
-                <th>Characters:</th>
-            </tr>
-        </thead>
-        <% campaignChars.forEach(function(character) { %>
-            <tbody>
-                <td><a href="/chars/<%= character._id %>"><%= character.name[0].toUpperCase() + character.name.substring(1) %>: Level <%= character.level %> <%= character.race[0].toUpperCase() + character.race.substring(1) %> <%= character.class[0].toUpperCase() + character.class.substring(1) %></a></td>
+<section id="show-campaign-page">
+    <div class="show-campaign-half">
+        <div id="half-title">Characters:</div>
+        <!-- <table id="chars-list"> -->
+        <div id="half-body">
+            <% campaignChars.forEach(function(character) { %>
+                <a href="/chars/<%= character._id %>"><%= character.name[0].toUpperCase() + character.name.substring(1) %>: Level <%= character.level %> <%= character.race[0].toUpperCase() + character.race.substring(1) %> <%= character.class[0].toUpperCase() + character.class.substring(1) %></a>
                 <!-- <a href="/chars/<%= character._id %>">DETAILS</a> -->
-                <td>
+                <% if ((user?._id.equals(campaign.owner)) || ((user?._id.equals(character.user)))) { %>
                     <form action="/campaigns/<%= campaign._id %>/chars?_method=PUT" method="POST">
                         <button id="remove-button" type="submit" name="charId" value="<%= character._id %>">Remove</button>
                     </form>
-                </td>
-            </tbody>
-        <% }); %>
-    </table>
-<!-- </section> -->
-<% if (usersChars.length > 0) { %>
-    <form id="add-char-to-campaign" action="/campaigns/<%= campaign._id %>/chars" method="POST">
-            <select name="charId">
-                <!-- Creates an option for each character -->
-                <% usersChars.forEach(function(uc) { %>
-                    <% if (user?._id.equals(uc.user)) { %>
-                        <option value="<%= uc._id %>"><%= uc.name %></option>
-                    <% } %>
-                <% }); %>
-            </select>
-        <button type="submit">Add Character</button>
-    </form>
+                <% } %>
+            <% }); %>
+        </div>
+
+        <% if (usersChars.length > 0) { %>
+            <form id="add-char-to-campaign" action="/campaigns/<%= campaign._id %>/chars" method="POST">
+                    <select name="charId">
+                        <!-- Creates an option for each character -->
+                        <% usersChars.forEach(function(uc) { %>
+                            <% if (user?._id.equals(uc.user)) { %>
+                                <option value="<%= uc._id %>"><%= uc.name %></option>
+                            <% } %>
+                        <% }); %>
+                    </select>
+                <button type="submit">Add Character</button>
+            </form>
+        <% } %>
+    </div>
+
+    <div class="show-campaign-half">
+        <div id="half-title">Songs:</div>
+        <div id="half-body">
+            <% campaignSongs.forEach(function(song) { %>
+                <a href="<%= song.url %>" target="_blank" rel="noopener noreferrer">LINK</a>
+                <a href="/songs/<%= song._id %>"><%= song.name[0].toUpperCase() + song.name.substring(1) %></a>
+                <% if ((user?._id.equals(campaign.owner)) || ((user?._id.equals(song.user)))) { %>
+                    <form action="/campaigns/<%= campaign._id %>/songs?_method=PUT" method="POST">
+                        <button id="remove-button" type="submit" name="songId" value="<%= song._id %>">Remove</button>
+                    </form>
+                <% } %>
+                <br>
+            <% }); %>
+        </div>
+        <% if (usersSongs.length > 0) { %>
+            <form id="add-song-to-campaign" action="/campaigns/<%= campaign._id %>/songs" method="POST">
+                    <select name="songId">
+                        <!-- Creates an option for each character -->
+                        <% usersSongs.forEach(function(us) { %>
+                            <% if (user?._id.equals(us.user)) { %>
+                                <option value="<%= us._id %>"><%= us.name %></option>
+                            <% } %>
+                        <% }); %>
+                    </select>
+                <button type="submit">Add Song</button>
+            </form>
+        <% } %>
+    </div>
 <% } %>
-<br>
-<br>
-<br>
+</section>
 <section id="user-options">
     <% if (user?._id.equals(campaign.owner)) { %>
-    <button class="user-options-button">
-        <a href="/campaigns/<%= campaign._id %>/edit">EDIT CAMPAIGN</a>
-    </button> 
-    <form action="/campaigns/<%= campaign._id %>?_method=DELETE" method="POST">
-        <button class="user-options-button" type="submit">DELETE CAMPAIGN</button>
-    </form>
+        <form action="/campaigns/<%= campaign._id %>/edit">
+            <button class="user-options-button" type="submit">EDIT CAMPAIGN</button>
+        </form>
+        <form action="/campaigns/<%= campaign._id %>?_method=DELETE" method="POST">
+            <button class="user-options-button" type="submit">DELETE CAMPAIGN</button>
+        </form>
     <% } %>
 </section>
-<% } %>
-
 <%- include('../partials/footer') %>

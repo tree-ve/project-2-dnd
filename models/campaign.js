@@ -9,7 +9,7 @@ const campaignSchema = new Schema({
   },
   chars: [{
     type: Schema.Types.ObjectId,
-    ref: 'Chars'
+    ref: 'Char'
   }],
   charNum: {
     type: Number

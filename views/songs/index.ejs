@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+<% if (user) { %>
+  <!-- <p>user._id: <%= user._id %></p> -->
+  <!-- <p>user.chars: <%= user.chars %></p> -->
+
+  
+
+<% } %>
+<table id="list">
+  <thead>
+    <tr>
+      <td></td>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Link</th>
+      <th></th>
+      <!-- <th></th> -->
+      <!-- <th><small>User</small></th> -->
+      <!-- <th></th> -->
+    </tr>
+  </thead>
+  <% if (user) { %>
+    <tbody>
+      <% songs.forEach(function(s) { %>
+        <% if (user?._id.equals(s.user)) { %>
+          <tr>
+            <td><a href="/songs/<%= s._id %>">DETAILS</a></td>
+            <td><%= s.name[0].toUpperCase() + s.name.substring(1) %></td>
+            <td><%= s.description %></td>
+            <!-- <td><%= s.url %></td> -->
+            <td><a href="<%= s.url %>" target="_blank" rel="noopener noreferrer">LINK</a></td>
+            <td><% campaigns.forEach(function(ca) { %>
+              <% if (ca?._id.equals(s.campaign)) { %>
+                <a href="/campaigns/<%= ca._id %>"><%= ca.name %></a>
+              <% } else if (s.campaign === undefined) { %>
+              <% } %>
+            <% }); %></td>
+            <!-- <td>
+              <form action="/songs/<%= s._id %>?_method=DELETE" method="POST">
+                <button type="submit">X</button>
+              </form>
+            </td> -->
+          </tr>
+        <% } %>
+      <% }); %>
+    </tbody>
+  <% } %>
+</table>
+<br>
+<section>
+  <% if (user) { %>
+      <button class="user-options-button"><a href="/songs/new">ADD A NEW SONG</a></button> 
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

@@ -125,10 +125,11 @@ nav > a.active {
 
 table {
   font-size: 20px;
+  /* margin-left: 200px; */
 }
 
 table thead th {
-  padding: 5px;
+  padding: 10px;
   border-bottom: 2px solid #424748;
 }
 
@@ -225,7 +226,7 @@ table td {
   color: #dedede;
   background-color: #616161;
   border: 2px solid #333333;
-  border-radius: 15px;
+  border-radius: 10px;
   padding: 10px;
   transition: 200ms;
 }
@@ -259,7 +260,7 @@ table td {
   color: #dedede;
   background-color: #616161;
   border: 2px solid #333333;
-  border-radius: 15px;
+  border-radius: 10px;
   padding: 10px;
   transition: 200ms;
 }
@@ -289,7 +290,7 @@ table td {
   padding-top: 10px;
   padding-bottom: 10px;
   border: 2px solid #333333;
-  border-radius: 15px;
+  border-radius: 10px;
   background-color: #616161;
 }
 
@@ -333,6 +334,52 @@ table td {
   padding-bottom: 30px;
   text-align: center;
   grid-auto-flow: column;
+}
+
+#show-campaign-page {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 50%);
+  justify-content: start;
+  /* grid-template-rows: repeat(auto, 10px); */
+  gap: 10px;
+  /* padding-bottom: 30px; */
+  /* text-align: center; */
+  grid-auto-flow: column;
+}
+.show-campaign-half {
+  display: grid;
+  /* grid-template-columns: repeat(2, 1fr); */
+  /* grid-template-rows: repeat(auto, 10px); */
+  /* gap: 10px; */
+  margin: 10px;
+  text-align: center;
+  /* grid-auto-flow: column; */
+}
+
+.show-campaign-half > #half-title {
+  padding: 10px;
+  height: 40px;
+  border-bottom: 2px solid #424748;
+  font-size: 20px;
+  text-decoration: solid;
+}
+
+.show-campaign-half > #half-body > * {
+  display: inline-flex;
+  /* grid-template-columns: repeat(1, 1fr); */
+  padding: 10px;
+  padding-bottom: 50px;
+  justify-content: space-between;
+  align-items: center;
+  /* height: 40px; */
+  /* border-bottom: 2px solid #424748; */
+  text-decoration: none;
+  /* transition: 1000ms; */
+}
+
+.show-campaign-half > #half-body > *:hover {
+  text-decoration: underline;
 }
 
 /* #chars-list {
@@ -444,7 +491,7 @@ hr {
   /* height: 50px; */
   /* width: 225px; */
   /* border-bottom: 3px solid #0051a7; */
-  border-radius: 15px;
+  border-radius: 10px;
   color: white;
 }
 
@@ -466,4 +513,22 @@ hr {
 .char-user img {
   border-radius: 50%;
   height: 40px;
+}
+
+#show-song {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  width: 250px;
+  padding-bottom: 20px;
+  text-align: center;
+  justify-items: start;
+}
+
+#show-song > div > * {
+  /* gap: 5px; */
+  width: 250px;
+  justify-content: start;
+  /* padding-bottom: 20px; */
+  /* text-align: center; */
 }

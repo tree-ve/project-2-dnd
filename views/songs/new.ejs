@@ -1,0 +1,15 @@
+<%- include('../partials/header') %>
+
+<form action="/users/<%= user._id %>/songs" method="POST">
+    <section id="show-song">
+        <!-- <div id="song-name">Title: <input type="text" name="name"></div> -->
+        <div>Title: <input type="text" name="name"></div>
+        <div>Description: <input type="text" name="description"></div>
+        <div>URL: <input type="text" name="url"></div>
+    </section>
+    <button class="char-edit-button" type="submit">ADD SONG</button>
+</form>
+
+<p><%= errorMsg %></p>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,14 @@
+<%- include('../partials/header') %>
+
+<form action="/songs/<%= song._id %>?_method=PUT" method="POST">
+  <div>Title: <input type="text" name="name" value="<%= song.name %>"></div><br>
+  <div>Description: <input type="text" name="description" value="<%= song.description %>"></div><br>
+  <div>URL: <input type="text" name="url" value="<%= song.url %>"></div><br>
+
+
+  <input type="submit" value="Save Changes">
+
+</form>
+<p><%= errorMsg %></p>
+
+<%- include('../partials/footer') %>
