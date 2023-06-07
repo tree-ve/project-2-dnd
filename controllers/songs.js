@@ -23,13 +23,13 @@ async function index(req, res) {
         const campaigns = await Campaign.find({});
         if (req.user === undefined) {
             console.log('user undefined')
-            res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+            return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
         }
-        res.render('songs/index', { title: 'My Songs', songs, campaigns, currentUser }); 
+        return res.render('songs/index', { title: 'My Songs', songs, campaigns, currentUser }); 
     } catch (err) {
         if (req.user === undefined) {
         console.log('user undefined')
-        res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+        return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
         }
     }
 }
@@ -41,18 +41,18 @@ async function show(req, res) {
       const song = await Song.findById(req.params.id);
       const activeCampaigns = await Campaign.find({ _id: song.campaigns });
       const campaigns = await Campaign.find({ _id: { $nin: song.campaigns } }).populate('name');
-      res.render('songs/show', { title: song.name, song, campaigns, activeCampaigns });
+      return res.render('songs/show', { title: song.name, song, campaigns, activeCampaigns });
     } catch (err) {
       if (req.user === undefined) {
         console.log('user undefined')
-        res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+        return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
       }
     }
   }
 
 function newSong(req, res) {
     console.log('songs new');
-    res.render('songs/new', { title: 'New Song', errorMsg: '' });
+    return res.render('songs/new', { title: 'New Song', errorMsg: '' });
 }
   
 async function create(req, res) {
@@ -68,16 +68,16 @@ async function create(req, res) {
         user.songs.push(song);
         await user.save();
         await song.save();
-        // res.render(`/songs/${song._id}`, { title: song.name, song });
+        // return res.render(`/songs/${song._id}`, { title: song.name, song });
         // index(user)
         const songs = await Song.find({ user: req.user._id});
         const currentUser = await User.find({}).populate('songs');
         const campaigns = await Campaign.find({});
-        res.render('songs/index', { title: 'My Songs', songs, campaigns, currentUser });
-        // res.redirect('songs/index');
+        return res.render('songs/index', { title: 'My Songs', songs, campaigns, currentUser });
+        // return res.redirect('songs/index');
     } catch (err) {
         console.log('err', err.message);
-        res.render('songs/new', { title: 'New Song', errorMsg: err.message });
+        return res.render('songs/new', { title: 'New Song', errorMsg: err.message });
     }
 }
 
@@ -85,7 +85,7 @@ async function edit(req, res, next) {
     console.log('songs edit')
     try {
         const song = await Song.findById(req.params.id);
-        res.render('songs/edit', { title: `Edit Song`, song, errorMsg: '' });
+        return res.render('songs/edit', { title: `Edit Song`, song, errorMsg: '' });
     } catch (err) {
         next()
     }
@@ -105,10 +105,10 @@ async function update(req, res) {
         Object.assign(song, req.body);
         await song.save()
         // console.log('songInfo -> ', songInfo);
-        // res.render('chars/show', { title: charInfo.name, char: charInfo.toObject(), activeCampaign })
-        res.render('songs/show', { title: song.name, song, activeCampaigns })
+        // return res.render('chars/show', { title: charInfo.name, char: charInfo.toObject(), activeCampaign })
+        return res.render('songs/show', { title: song.name, song, activeCampaigns })
     } catch (err) {
-        res.render('songs/edit', { title: `Edit Song`, song, errorMsg: err.message });
+        return res.render('songs/edit', { title: `Edit Song`, song, errorMsg: err.message });
     }
 }
 
@@ -126,7 +126,7 @@ async function deleteSong(req, res) {
     song.deleteOne(
       { _id: req.params.id }
     )
-    res.redirect('/songs');
+    return res.redirect('/songs');
 }
 
 async function addToCampaign(req, res, next) {
@@ -140,9 +140,9 @@ async function addToCampaign(req, res, next) {
         song.campaigns.push(campaign)
         await song.save();
         // console.log(song.campaigns)
-        res.redirect(`/campaigns/${campaign._id}`);
+        return res.redirect(`/campaigns/${campaign._id}`);
     } catch (err) {
-        res.redirect(`/campaigns/${campaign._id}`);
+        return res.redirect(`/campaigns/${campaign._id}`);
         next()
     }
 }
@@ -159,5 +159,5 @@ async function removeFromCampaign(req, res) {
     await song.save();
     await campaign.save();
     // console.log(song.campaigns.indexOf(campaign._id))
-    res.redirect(`/campaigns/${campaign._id}`);
+    return res.redirect(`/campaigns/${campaign._id}`);
 }

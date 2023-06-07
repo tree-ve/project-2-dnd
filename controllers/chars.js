@@ -38,9 +38,9 @@ async function addToCampaign(req, res, next) {
     char.campaign = {}
     char.campaign = campaign
     await char.save();
-    res.redirect(`/campaigns/${campaign._id}`);
+    return res.redirect(`/campaigns/${campaign._id}`);
   } catch (err) {
-    res.redirect(`/campaigns/${campaign._id}`);
+    return res.redirect(`/campaigns/${campaign._id}`);
     next()
   }
 }
@@ -54,7 +54,7 @@ async function removeFromCampaign(req, res) {
   }
   await char.save();
   await campaign.save();
-  res.redirect(`/campaigns/${campaign._id}`);
+  return res.redirect(`/campaigns/${campaign._id}`);
 }
 
 async function index(req, res) {
@@ -64,13 +64,13 @@ async function index(req, res) {
     const campaigns = await Campaign.find({});
     if (req.user === undefined) {
       console.log('user undefined')
-      res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
     }
-    res.render('chars/index', { title: 'My Characters', chars, campaigns }); 
+    return res.render('chars/index', { title: 'My Characters', chars, campaigns }); 
   } catch (err) {
     if (req.user === undefined) {
       console.log('user undefined')
-      res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
     }
   }
 }
@@ -89,7 +89,7 @@ async function deleteChar(req, res) {
   char.deleteOne(
     { _id: req.params.id }
   )
-  res.redirect('/chars');
+  return res.redirect('/chars');
 }
 
 async function show(req, res) {
@@ -99,18 +99,18 @@ async function show(req, res) {
     const char = await Char.findById(req.params.id);
     const activeCampaign = await Campaign.find({ _id: char.campaign });
     const campaigns = await Campaign.find({ _id: { $nin: char.campaign } });
-    res.render('chars/show', { title: char.name, char, campaigns, activeCampaign });
+    return res.render('chars/show', { title: char.name, char, campaigns, activeCampaign });
   } catch (err) {
     if (req.user === undefined) {
       console.log('user undefined')
-      res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
     }
   }
 }
 
 function newChar(req, res) {
   console.log('chars new');
-  res.render('chars/new', { title: 'New Character', errorMsg: '' });
+  return res.render('chars/new', { title: 'New Character', errorMsg: '' });
 }
 
 
@@ -127,10 +127,10 @@ async function create(req, res) {
     const char = await Char.create(req.body);
     user.chars.push(char);
     await user.save();
-    res.redirect(`/chars/${char._id}`, { title: char.name, char });
+    return res.redirect(`/chars/${char._id}`, { title: char.name, char });
   } catch (err) {
     console.log('err', err.message);
-    res.render('chars/new', { title: 'New Character', errorMsg: err.message });
+    return res.render('chars/new', { title: 'New Character', errorMsg: err.message });
   }
 }
 
@@ -138,7 +138,7 @@ async function edit(req, res, next) {
   console.log('chars edit')
   try {
     const char = await Char.findById(req.params.id);
-    res.render('chars/edit', { title: `Edit Character`, char, errorMsg: '' });
+    return res.render('chars/edit', { title: `Edit Character`, char, errorMsg: '' });
   } catch (error) {
     next()
   }
@@ -154,8 +154,8 @@ async function update(req, res) {
     const body = formatBody(req.body);
     Object.assign(charInfo, body);
     await charInfo.save()
-    res.render('chars/show', { title: charInfo.name, char: charInfo.toObject(), activeCampaign })
+    return res.render('chars/show', { title: charInfo.name, char: charInfo.toObject(), activeCampaign })
   } catch (err) {
-    res.render('chars/edit', { title: `Edit Character: ${char.name}`, char, errorMsg: err.message });
+    return res.render('chars/edit', { title: `Edit Character: ${char.name}`, char, errorMsg: err.message });
   }
 }

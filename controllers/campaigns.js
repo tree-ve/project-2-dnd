@@ -26,15 +26,15 @@ async function index(req, res) {
       const num = campaignChars.length
       campaigns[i].charNum = num
     }
-    res.render('campaigns/index', { title: 'My Campaigns', campaigns });
+    return res.render('campaigns/index', { title: 'My Campaigns', campaigns });
   } catch (err) {
     if (req.user === undefined) {
       console.log('5');
       console.log('user undefined')
       console.log(err.message)
-      res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
     }
-    res.render('campaigns/index', { title: 'My Campaigns', campaigns, errorMsg: err.message });
+    return res.render('campaigns/index', { title: 'My Campaigns', campaigns, errorMsg: err.message });
   }
 }
 
@@ -58,8 +58,8 @@ async function addToChar(req, res) {
   console.log('req.params.id ->', req.params.id)
   console.log('char._id ->', char._id)
   console.log('char.id ->', char.id)
-  // res.render(`/chars/${char.id}`, char);
-  res.redirect(`/chars/${char.id}`);
+  // return res.render(`/chars/${char.id}`, char);
+  return res.redirect(`/chars/${char.id}`);
   console.log('char', char)
 }
 
@@ -93,7 +93,7 @@ async function deleteCampaign(req, res) {
   campaign.deleteOne(
     { _id: req.params.id }
   )
-  res.redirect('/campaigns');
+  return res.redirect('/campaigns');
 }
 
 async function show(req, res) {
@@ -120,16 +120,16 @@ async function show(req, res) {
     const campaignSongs = await Song.find({ campaigns: campaign });
     // console.log(campaignSongs)
     // console.log(usersSongs)
-    res.render('campaigns/show', { title: campaign.name, campaign, chars, songs, usersChars, usersSongs, campaignChars, campaignSongs });
+    return res.render('campaigns/show', { title: campaign.name, campaign, chars, songs, usersChars, usersSongs, campaignChars, campaignSongs });
   } catch (err) {
     console.log('err', err);
     // console.log(req.user)
     if (req.user === undefined) {
       console.log('user undefined')
-      res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
     }
     console.log('penultimate campaign show err');
-    res.render('campaigns', { title: 'My Campaigns', errorMsg: err.message });
+    return res.render('campaigns', { title: 'My Campaigns', errorMsg: err.message });
   }
 }
 
@@ -137,7 +137,7 @@ function newCampaign(req, res) {
   console.log('campaign newCampaign')
   // We'll want to be able to render an  
   // errorMsg if the create action fails
-  res.render('campaigns/new', { title: 'New Campaign', errorMsg: '' });
+  return res.render('campaigns/new', { title: 'New Campaign', errorMsg: '' });
 }
 
 async function create(req, res) {
@@ -152,12 +152,12 @@ async function create(req, res) {
     const campaigns = await Campaign.find({});
     // await campaigns.save();
     console.log('penultimate campaign create try');
-    // res.redirect(`/campaigns/${campaign._id}`, { title: campaign.name, campaign });
-    res.render('campaigns/index', { title: 'My Campaigns', campaigns });
+    // return res.redirect(`/campaigns/${campaign._id}`, { title: campaign.name, campaign });
+    return res.render('campaigns/index', { title: 'My Campaigns', campaigns });
   } catch (err) {
     console.log('err', err.message);
     console.log('penultimate campaign create err');
-    res.render('campaigns/new', { title: 'New Campaign', errorMsg: err.message });
+    return res.render('campaigns/new', { title: 'New Campaign', errorMsg: err.message });
   }
 }
 
@@ -173,7 +173,7 @@ async function edit(req, res, next) {
     } else {
       console.log('false');
     }
-    res.render('campaigns/edit', { title: `Edit Campaign: ${campaign.name}`, campaign, errorMsg: '' });
+    return res.render('campaigns/edit', { title: `Edit Campaign: ${campaign.name}`, campaign, errorMsg: '' });
   } catch (error) {
     next()
   }
@@ -182,15 +182,18 @@ async function edit(req, res, next) {
 async function update(req, res) {
   console.log('campaign update')
   try {
+    const user = await User.findById(req.user._id);
     const campaign = await Campaign.findById(req.params.id);
     const usersChars = await Char.find({ campaign: { $exists: false } });
+    const usersSongs = await Song.find({ campaigns: { $nin: campaign }, user: user._id });
     const campaignChars = await Char.find({ campaign: campaign });
     const campaignInfo = await Campaign.findById(req.params.id);
+    const campaignSongs = await Song.find({ campaigns: campaign });
     // const body = formatBody(req.body);
     Object.assign(campaignInfo, req.body);
     await campaignInfo.save()
-    res.render('campaigns/show', { title: campaignInfo.name, campaign: campaignInfo.toObject(), usersChars, campaignChars })
+    return res.render('campaigns/show', { title: campaignInfo.name, campaign: campaignInfo.toObject(), usersChars, usersSongs, campaignChars, campaignSongs })
   } catch (err) {
-    res.render('campaign/edit', { title: `Edit Campaign:`, campaign, errorMsg: err.message });
+    return res.render('campaign/edit', { title: `Edit Campaign:`, campaign, errorMsg: err.message });
   }
 }
