@@ -113,8 +113,10 @@ async function show(req, res) {
     }
     const chars = await Char.find({ _id: userCharsArr });
     const songs = await Song.find({ _id: userSongsArr });
-    const usersChars = await Char.find({ campaign: { $exists: false } });
-    const usersSongs = await Song.find({ campaigns: { $nin: campaign } });
+    const usersChars = await Char.find({ campaign: { $exists: false }, user: user._id });
+    const usersSongs = await Song.find({ campaigns: { $nin: campaign }, user: user._id });
+    console.log(usersChars.length);
+    console.log(usersSongs.length);
     // const usersSongs = await Song.find({});
     const campaignChars = await Char.find({ campaign: campaign }).sort('name');
     const campaignSongs = await Song.find({ campaigns: campaign });
