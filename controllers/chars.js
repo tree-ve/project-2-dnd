@@ -62,16 +62,16 @@ async function index(req, res) {
   try {
     const chars = await Char.find({ user: req.user._id}).sort('level');
     const campaigns = await Campaign.find({});
-    if (req.user === undefined) {
-      console.log('user undefined')
-      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
-    }
+    // if (req.user === undefined) {
+    //   console.log('user undefined')
+    //   return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+    // }
     return res.render('chars/index', { title: 'My Characters', chars, campaigns }); 
   } catch (err) {
-    if (req.user === undefined) {
-      console.log('user undefined')
-      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
-    }
+    // if (req.user === undefined) {
+    //   console.log('user undefined')
+    //   return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+    // }
   }
 }
 
@@ -101,10 +101,10 @@ async function show(req, res) {
     const campaigns = await Campaign.find({ _id: { $nin: char.campaign } });
     return res.render('chars/show', { title: char.name, char, campaigns, activeCampaign });
   } catch (err) {
-    if (req.user === undefined) {
-      console.log('user undefined')
-      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
-    }
+    // if (req.user === undefined) {
+    //   console.log('user undefined')
+    //   return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+    // }
   }
 }
 

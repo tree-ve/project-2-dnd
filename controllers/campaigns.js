@@ -28,12 +28,12 @@ async function index(req, res) {
     }
     return res.render('campaigns/index', { title: 'My Campaigns', campaigns });
   } catch (err) {
-    if (req.user === undefined) {
-      console.log('5');
-      console.log('user undefined')
-      console.log(err.message)
-      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
-    }
+    // if (req.user === undefined) {
+    //   console.log('5');
+    //   console.log('user undefined')
+    //   console.log(err.message)
+    //   return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+    // }
     return res.render('campaigns/index', { title: 'My Campaigns', campaigns, errorMsg: err.message });
   }
 }
@@ -124,10 +124,10 @@ async function show(req, res) {
   } catch (err) {
     console.log('err', err);
     // console.log(req.user)
-    if (req.user === undefined) {
-      console.log('user undefined')
-      return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
-    }
+    // if (req.user === undefined) {
+    //   console.log('user undefined')
+    //   return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+    // }
     console.log('penultimate campaign show err');
     return res.render('campaigns', { title: 'My Campaigns', errorMsg: err.message });
   }

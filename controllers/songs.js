@@ -21,16 +21,16 @@ async function index(req, res) {
         const songs = await Song.find({ user: req.user._id});
         const currentUser = await User.find({}).populate('songs');
         const campaigns = await Campaign.find({});
-        if (req.user === undefined) {
-            console.log('user undefined')
-            return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
-        }
+        // if (req.user === undefined) {
+        //     console.log('user undefined')
+        //     return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+        // }
         return res.render('songs/index', { title: 'My Songs', songs, campaigns, currentUser }); 
     } catch (err) {
-        if (req.user === undefined) {
-        console.log('user undefined')
-        return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
-        }
+        // if (req.user === undefined) {
+        // console.log('user undefined')
+        // return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+        // }
     }
 }
 
@@ -43,10 +43,10 @@ async function show(req, res) {
       const campaigns = await Campaign.find({ _id: { $nin: song.campaigns } }).populate('name');
       return res.render('songs/show', { title: song.name, song, campaigns, activeCampaigns });
     } catch (err) {
-      if (req.user === undefined) {
-        console.log('user undefined')
-        return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
-      }
+    //   if (req.user === undefined) {
+    //     console.log('user undefined')
+    //     return res.render('', { title: 'D&D Organiser', errorMsg: err.message });
+    //   }
     }
   }
 
