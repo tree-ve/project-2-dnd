@@ -31,11 +31,9 @@ router.put('/songs/:id', songsCtrl.update)
 router.delete('/songs/:id', ensureLoggedIn, songsCtrl.delete);
 // router.delete('/songs/:id', ensureLoggedIn, songsCtrl.delete);
 
-// ! Need an addToCampaign
 // POST /campaigns/:id/songs
 router.post('/campaigns/:id/songs', ensureLoggedIn, songsCtrl.addToCampaign);
 
-// ! Need an removeFromCampaign
 // POST /campaigns/:id/songs
 router.put('/campaigns/:id/songs', ensureLoggedIn, songsCtrl.removeFromCampaign);
 

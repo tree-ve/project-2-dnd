@@ -31,11 +31,9 @@ router.put('/chars/:id', charsCtrl.update)
 router.delete('/chars/:id', ensureLoggedIn, charsCtrl.delete);
 // router.delete('/chars/:id', ensureLoggedIn, charsCtrl.delete);
 
-// ! Need an addToCampaign
 // POST /campaigns/:id/chars
 router.post('/campaigns/:id/chars', ensureLoggedIn, charsCtrl.addToCampaign);
 
-// ! Need an removeFromCampaign
 // POST /campaigns/:id/chars
 router.put('/campaigns/:id/chars', ensureLoggedIn, charsCtrl.removeFromCampaign);
 
