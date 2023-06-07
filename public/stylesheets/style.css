@@ -71,7 +71,6 @@ nav > a.active {
   color: white;
   cursor: default;
   background-color: #750000;
-  /* border-bottom: 3px solid #a70000; */
 }
 
 #new-form {
@@ -89,12 +88,9 @@ nav > a.active {
 }
 
 #new-form input {
-  /* grid-column: span 2; */
-  /* display: grid; */
   width: 100px;
   margin-left: auto;
   justify-content: start;
-  /* margin-top: 100px; */
 }
 
 #new-form input[type="submit"] {
@@ -107,14 +103,10 @@ nav > a.active {
 #new-form .newStats {
   display: grid;
   grid-column: span 2;
-  /* width: 1px; */
   grid-gap: 60px;
   justify-content: center;
-  /* grid-column-start: 0; */
-  /* margin-left: auto; */
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 10px);
-  /* grid-auto-flow: column; */
 }
 
 #new-form .newStats input[type="number"] {
@@ -125,7 +117,6 @@ nav > a.active {
 
 table {
   font-size: 20px;
-  /* margin-left: 200px; */
 }
 
 table thead th {
@@ -144,14 +135,18 @@ table td {
 
 #list a {
   border-radius: 4px;
+  color: #dedede;
   background-color: #B8C0C2;
+  background-color: #616161;
   padding: 4px;
   text-decoration: none;
   font-size: 14px;
+  transition: 200ms;
 }
 
 #list a:hover {
-  background-color: white;
+  transition: 200ms;
+  background-color: #a70000;
 }
 
 #show-page {
@@ -172,21 +167,16 @@ table td {
 }
 
 #show-char > div > * {
-  /* gap: 5px; */
   width: 100px;
-  /* padding-bottom: 20px; */
-  /* text-align: center; */
 }
 
 #edit-name {
   display: flex;
   font-size: 20px;
   height: 40px;
-  /* width: 100px; */
   text-align: center;
   justify-content: center;
   align-items: center;
-  /* padding-bottom: 10px; */
   margin-bottom: 10px;
 }
 #edit-name > * {
@@ -198,8 +188,6 @@ table td {
   justify-content: center;
   align-items: center;
   margin-left: 10px;
-  /* padding-bottom: 10px; */
-  /* margin-bottom: 10px; */
 }
 
 #hp-ac {
@@ -276,11 +264,9 @@ table td {
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(2, 100px);
   justify-content: center;
-  /* grid-auto-flow: column; */
   grid-column-gap: 20px;
   grid-row-gap: 15px;
   text-align: center;
-  /* background-color: #c0b48e; */
 }
 
 #stats > div {
@@ -316,15 +302,8 @@ table td {
 }
 
 #stats > div > small {
-  /* margin: 10px; */
   color: #dedede;
-  /* padding-top: 5px; */
-  /* background-color: #c08e8e; */
 }
-
-/* #stats div:nth-child(3n + 2) {
-  font-weight: bold;
-} */
 
 #show-campaign {
   /* display: grid; */
@@ -367,26 +346,16 @@ table td {
 
 .show-campaign-half > #half-body > * {
   display: inline-flex;
-  /* grid-template-columns: repeat(1, 1fr); */
   padding: 10px;
   padding-bottom: 50px;
   justify-content: space-between;
   align-items: center;
-  /* height: 40px; */
-  /* border-bottom: 2px solid #424748; */
   text-decoration: none;
-  /* transition: 1000ms; */
 }
 
 .show-campaign-half > #half-body > *:hover {
   text-decoration: underline;
 }
-
-/* #chars-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(auto, 10px);
-} */
 
 #chars-list {
   display: grid;
@@ -401,14 +370,12 @@ table td {
 
 #chars-list a {
   border-radius: 4px;
-  /* background-color: #B8C0C2; */
   padding: 4px;
   text-decoration: none;
   font-size: 16px;
 }
 
 #chars-list a:hover {
-  /* background-color: white; */
   text-decoration: underline;
 }
 
@@ -429,25 +396,6 @@ table td {
 hr {
   color: #424748
 }
-
-/* #badge-container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 1rem;
-  width: 80%;
-  border: 2px solid #B8C0C2;
-  border-radius: .5rem;
-  margin: .5rem 0 2rem;
-} */
-
-/* .badge {
-  background-color: #B8C0C2;
-  padding: .5rem;
-  margin: .5rem;
-  border-radius: .3rem;
-  font-size: .8rem;
-  text-align: center;
-} */
 
 #show-page ul {
   margin: 0 0 2rem;
@@ -477,31 +425,22 @@ hr {
   display: flex;
   justify-content: center;
   height: 40px;
-  /* background-color: #333333; */
   border-radius: 50%;
   padding: 5px;
   margin-left: 10px;
-  /* margin-right: 10px; */
   transition: 200ms;
 }
 
 .login:hover {
   background-color: #555555;
   transition: 200ms;
-  /* height: 50px; */
-  /* width: 225px; */
-  /* border-bottom: 3px solid #0051a7; */
   border-radius: 10px;
   color: white;
 }
 
 .login:hover img {
-  /* background-color: #750000; */
   transition: 200ms;
   justify-content: center;
-  /* padding: 10px; */
-  /* margin-left: 20px; */
-  /* margin-right: 0px; */
 }
 
 .char-user {
@@ -526,9 +465,6 @@ hr {
 }
 
 #show-song > div > * {
-  /* gap: 5px; */
   width: 250px;
   justify-content: start;
-  /* padding-bottom: 20px; */
-  /* text-align: center; */
 }

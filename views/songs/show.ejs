@@ -2,7 +2,7 @@
 <% if (user) { %>
     <p><%= song.description %></p>
     <br>
-    <a href="<%= song.url %>"><%= song.url %></a>
+    <a href="<%= song.url %>" target="_blank" rel="noopener noreferrer"><%= song.url %></a>
     <br>
     <% if (song.campaigns.length > 0) { %>
         <div>Used in: </div>

@@ -1,9 +1,6 @@
-// const { format } = require('morgan');
 const Campaign = require('../models/campaign');
 const Char = require('../models/char');
-// const Campaign = require('../models/campaign');
 const User = require('../models/user');
-const { all } = require('../routes/chars');
 
 module.exports = {
   index,

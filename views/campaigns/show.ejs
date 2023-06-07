@@ -13,6 +13,8 @@
                     <form action="/campaigns/<%= campaign._id %>/chars?_method=PUT" method="POST">
                         <button id="remove-button" type="submit" name="charId" value="<%= character._id %>">Remove</button>
                     </form>
+                <% } else { %>
+                    <div></div>    
                 <% } %>
             <% }); %>
         </div>
