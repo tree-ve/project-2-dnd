@@ -97,7 +97,15 @@ nav > a.active {
   grid-column: span 2;
   width: 200px;
   margin-left: auto;
+  margin-right: auto;
   margin-top: 100px;
+}
+
+#new-form input[type="text"] {
+  grid-column: span 2;
+  width: 400px;
+  /* margin-left: auto; */
+  /* margin-top: 100px; */
 }
 
 #new-form .newStats {

@@ -149,8 +149,11 @@ async function create(req, res) {
     const campaign = await Campaign.create(req.body);
     // ? user.chars.push(req.body);
     await campaign.save();
+    const campaigns = await Campaign.find({});
+    // await campaigns.save();
     console.log('penultimate campaign create try');
-    res.redirect(`/campaigns/${campaign._id}`, { title: campaign.name, campaign });
+    // res.redirect(`/campaigns/${campaign._id}`, { title: campaign.name, campaign });
+    res.render('campaigns/index', { title: 'My Campaigns', campaigns });
   } catch (err) {
     console.log('err', err.message);
     console.log('penultimate campaign create err');
